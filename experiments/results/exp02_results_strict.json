@@ -1,0 +1,4870 @@
+{
+  "experiment": "exp02_specialized_agents",
+  "model": "deepseek-v4-pro",
+  "sample_sizes": {
+    "issue": 30,
+    "pr": 30,
+    "ci": 30
+  },
+  "dataset_note": "Synthetic labeled benchmark authored for this experiment; not human-labeled production data.",
+  "elapsed_seconds": 284.3,
+  "usage": {
+    "calls": 90,
+    "prompt_tokens": 59060,
+    "completion_tokens": 173486,
+    "total_tokens": 232546,
+    "errors": 0
+  },
+  "metrics": {
+    "issue": {
+      "macro_f1": 0.4749,
+      "accuracy": 0.5333,
+      "per_label": {
+        "Bug": {
+          "precision": 0.5,
+          "recall": 0.2,
+          "f1": 0.2857,
+          "support": 5
+        },
+        "Feature": {
+          "precision": 0.2667,
+          "recall": 0.8,
+          "f1": 0.4,
+          "support": 5
+        },
+        "Documentation": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.8889,
+          "support": 4
+        },
+        "Test": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 4
+        },
+        "Ops": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "support": 4
+        },
+        "Refactor": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 4
+        },
+        "Question": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 4
+        }
+      }
+    },
+    "pr": {
+      "tp": 5,
+      "fp": 1,
+      "fn": 10,
+      "tn": 14,
+      "precision": 0.8333,
+      "recall": 0.3333,
+      "f1": 0.4762,
+      "accuracy": 0.6333
+    },
+    "ci": {
+      "failure_type_accuracy": 0.7,
+      "root_cause_top1": 0.9667,
+      "by_type": {
+        "build": {
+          "n": 5,
+          "failure_type_accuracy": 0.6,
+          "root_cause_top1": 0.8
+        },
+        "dependency": {
+          "n": 5,
+          "failure_type_accuracy": 0.6,
+          "root_cause_top1": 1.0
+        },
+        "environment": {
+          "n": 5,
+          "failure_type_accuracy": 0.8,
+          "root_cause_top1": 1.0
+        },
+        "lint": {
+          "n": 5,
+          "failure_type_accuracy": 0.2,
+          "root_cause_top1": 1.0
+        },
+        "permission": {
+          "n": 5,
+          "failure_type_accuracy": 1.0,
+          "root_cause_top1": 1.0
+        },
+        "test": {
+          "n": 5,
+          "failure_type_accuracy": 1.0,
+          "root_cause_top1": 1.0
+        }
+      }
+    }
+  },
+  "mean_elapsed_ms": {
+    "issue": 51893.5563,
+    "pr": 149744.294,
+    "ci": 239604.0183
+  },
+  "errors": {
+    "issue": [],
+    "pr": [],
+    "ci": []
+  },
+  "rows": {
+    "issue": [
+      {
+        "id": "issue-01",
+        "expected": "Bug",
+        "predicted": "Bug",
+        "correct": true,
+        "elapsed_ms": 28463.59,
+        "output": {
+          "summary": "Issue #1 登录接口在 token 过期后返回 500 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 描述了 KeyError: 'sub' 与预期 401 不一致，但缺少复现步骤、完整堆栈、受影响代码位置、验收标准和影响范围，无法安全地进入开发或拆分。需要作者补充关键信息后再评估。",
+          "category": "Bug",
+          "priority": "P1",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 backend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者追问：具体是哪个登录接口？请求方法与路径是什么？",
+            "要求补充后端完整 traceback，定位 KeyError: 'sub' 抛出的文件、函数与行号。",
+            "确认 token 解析逻辑是中间件、装饰器还是业务代码，以及过期 token 是否应该被提前拦截。",
+            "补充验收标准：token 过期/缺失/非法时必须返回 401，并定义响应体结构（例如 {'code': 401, 'message': 'token expired'}）。",
+            "评估影响范围：哪些服务或接口共用同一个 token 解析函数，是否都有同样问题。",
+            "若有相关测试用例或日志，请附上请求样例和 token 生成方式，便于复现。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢反馈。为了准确定位和修复，请补充以下信息：\n1. 触发问题的具体接口（URL、方法、请求参数）。\n2. 后端抛出的完整堆栈（包括抛出 KeyError: 'sub' 的文件和行号）。\n3. 使用的认证机制（JWT? session?）以及 token 解析/校验代码位置。\n4. 当前是否有针对过期 token 的处理逻辑？如果没有，期望如何返回 401？\n5. 验收标准：哪些场景（过期、缺失、非法）必须返回 401，响应体格式如何？\n6. 影响范围：是否有其他接口复用同一 token 解析逻辑？\n\n补充后我会重新评估优先级和复杂度。",
+            "task_breakdown": null
+          },
+          "confidence": 0.4
+        },
+        "error": null
+      },
+      {
+        "id": "issue-02",
+        "expected": "Bug",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 24351.76,
+        "output": {
+          "summary": "Issue #2 导出 CSV 时中文全部变成问号 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #2: 导出 CSV 时中文全部变成问号",
+              "snippet": "导出 CSV 时中文全部变成问号\nWindows Excel 打开后乱码，文件按 utf-8 写入而不是 utf-8-sig，中文列名全部丢失。",
+              "reference": "2",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #2 导出 CSV 时中文全部变成问号，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-03",
+        "expected": "Bug",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 18843.04,
+        "output": {
+          "summary": "Issue #3 并发创建订单会重复扣减库存 的建议结论是：拆分。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 描述了并发扣减库存导致超卖的核心问题，但缺少复现步骤、系统架构、期望行为、影响范围等关键信息，无法直接进入开发或准确评估复杂度。",
+          "category": "Feature",
+          "priority": "P1",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认复现步骤和请求并发度",
+            "确认库存扣减相关代码位置和当前事务/锁机制",
+            "确认期望行为：是否允许超卖？库存为负数时如何处理？",
+            "确认影响范围和优先级"
+          ],
+          "action_items": [
+            "按用户价值、模块边界或交付顺序拆成 2-5 个子任务。",
+            "为每个子任务补充验收标准、依赖关系和建议负责人。",
+            "确认最小可交付范围，优先排第一个可独立验证的子任务。",
+            "把拆分说明作为评论回填到原 Issue。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢反馈。为了准确处理该问题，请补充以下信息：1. 复现步骤和并发请求示例；2. 涉及的接口/服务；3. 当前数据库事务隔离级别和库存扣减实现；4. 期望行为（如允许超卖还是必须拒绝订单）。",
+            "task_breakdown": null
+          },
+          "confidence": 0.4
+        },
+        "error": null
+      },
+      {
+        "id": "issue-04",
+        "expected": "Bug",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 17672.08,
+        "output": {
+          "summary": "Issue #4 移动端 Safari 点击下拉框没有反应 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 仅描述了一个症状（iOS 17 Safari 上 select 被透明遮罩覆盖导致点击无效），但缺少复现步骤、具体页面/组件上下文、预期行为、影响范围以及相关代码线索，无法确认根因和修复范围，因此需等待澄清后再决定是否进入开发。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "补充复现步骤：具体页面 URL 或路由、触发操作、使用的 iOS 版本和 Safari 版本。",
+            "确认是所有 select 组件均受影响，还是仅特定页面或特定样式下的 select。",
+            "提供可访问的测试环境或最小复现示例（如 CodePen/独立 HTML）。",
+            "定位可疑透明遮罩的来源（CSS 伪元素、全局遮罩、第三方库等），并附代码位置。",
+            "明确验收标准：例如所有移动端 Safari 下 select 可正常展开并选择。",
+            "评估影响范围：用户量、是否阻塞核心流程、是否有临时绕过方案。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢反馈。为了进一步定位问题，请补充以下信息：\n1. 出现问题的具体页面链接或路由；\n2. 操作步骤（点击 select 前后的行为）；\n3. 设备型号、iOS 版本、Safari 版本；\n4. 是否所有 select 都有此问题，还是特定场景；\n5. 如果能提供最小复现示例或截图/录屏将非常有帮助。\n另外，请确认透明遮罩是否来自自定义样式或全局组件，并附上相关代码片段。",
+            "task_breakdown": null
+          },
+          "confidence": 0.35
+        },
+        "error": null
+      },
+      {
+        "id": "issue-05",
+        "expected": "Bug",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 18604.69,
+        "output": {
+          "summary": "Issue #5 定时任务偶尔重复执行 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #5: 定时任务偶尔重复执行",
+              "snippet": "定时任务偶尔重复执行\ncron worker 在滚动部署时启动了两个实例，同一个清理任务被消费两次。",
+              "reference": "5",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #5 定时任务偶尔重复执行，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-06",
+        "expected": "Feature",
+        "predicted": "Feature",
+        "correct": true,
+        "elapsed_ms": 30132.23,
+        "output": {
+          "summary": "Issue #6 支持按标签筛选 Issue 列表 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue #6 提出了功能需求，但缺少验收标准、当前排序方式的具体定义、多选标签的筛选逻辑（AND/OR）以及改动范围（前端/后端）等关键信息；上下文为空，无相似 Issue 或团队信息可供参考，因此无法直接进入开发，需要先澄清需求细节。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 frontend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "澄清“当前排序方式”具体包含哪些选项及默认值。",
+            "确认多选标签过滤的匹配逻辑（同时满足 AND 或任一满足 OR）。",
+            "明确验收标准，包括筛选结果准确性、排序不被影响、分页场景下的行为。",
+            "确认改动范围：仅前端交互还是需要后端查询支持（如性能、分页）。",
+            "检查是否有现有标签筛选组件或设计稿可复用。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提交。为了准确评估和实现，请补充以下信息：1. 当前 Issue 列表支持哪些排序方式，希望筛选后如何保留？2. 多选标签筛选的逻辑是同时满足（AND）还是任一满足（OR）？3. 是否需要在分页下的服务端筛选？4. 验收标准是什么？",
+            "task_breakdown": null
+          },
+          "confidence": 0.5
+        },
+        "error": null
+      },
+      {
+        "id": "issue-07",
+        "expected": "Feature",
+        "predicted": "Ops",
+        "correct": false,
+        "elapsed_ms": 23108.47,
+        "output": {
+          "summary": "Issue #7 希望在 PR 页面显示 CI 重跑按钮 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 提出在 PR 页面显示 CI 重跑按钮，但缺少关键信息：具体 CI 系统、权限模型、验收标准、影响范围及现有实现情况。无法评估优先级、复杂度和实施路径。",
+          "category": "Ops",
+          "priority": "P3",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 frontend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认期望的 CI 系统（如 GitHub Actions、Jenkins、CircleCI 等）",
+            "确认重跑按钮的权限模型：是否所有审查者均可触发？是否需要限制到 PR 作者或具有写权限的人？",
+            "明确验收标准：例如点击按钮后 workflow 能在合理时间内开始重跑，且 UI 有状态反馈",
+            "收集影响范围：前端 PR 页面组件、后端 API 端点、CI 系统集成方式",
+            "检查现有代码库中是否已有触发 CI 的相关逻辑或相似 UI 组件，避免重复开发"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "@engineer 感谢提出这个需求。为了准确评估和实施，请补充以下信息：\n1. 这里的 CI 具体指哪种系统？（问题中提到 GitHub Actions，是否需要支持其他 CI？）\n2. 重跑按钮的权限如何控制？是所有有权限审查 PR 的人都可以触发，还是仅限特定角色？\n3. 期望的交互细节是什么？例如按钮位置、点击后是否有确认提示、重跑状态如何展示？\n4. 有没有验收标准或测试场景？\n5. 是否已有相关实现或设计稿？欢迎补充。",
+            "task_breakdown": null
+          },
+          "confidence": 0.3
+        },
+        "error": null
+      },
+      {
+        "id": "issue-08",
+        "expected": "Feature",
+        "predicted": "Feature",
+        "correct": true,
+        "elapsed_ms": 18680.3,
+        "output": {
+          "summary": "Issue #8 增加周报导出为 PDF 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 只描述了‘增加周报导出为 PDF，包含图表和链接’，但缺少关键验收标准：PDF 的布局与样式要求、图表是否必须保留可交互性、链接是否可点击、导出的数据范围与权限、是否需要自动调度与存储等。在信息不足时直接开发会导致返工。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向提出人确认 PDF 导出的具体触发方式（单个周报下载/批量导出/定时发送）",
+            "确认 PDF 中图表与链接的呈现形式（静态图片、可点击链接、是否保留可交互图表）",
+            "确认周报的数据范围、时间范围、权限控制与敏感信息处理",
+            "确认 PDF 布局、样式、页眉页脚、封面等设计要求",
+            "调研技术栈中可用的 PDF 生成方案（如浏览器打印、服务端渲染）并评估复杂度",
+            "补充验收标准与测试用例（如图表渲染正确、链接可点击、中文字体不乱码）"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出需求。在进入开发前，需要补充以下信息以明确范围：\n1. 导出入口和触发方式：用户从哪里点击下载？是单个周报还是支持批量？\n2. 图表和链接的呈现：PDF 中图表需要静态图片即可，还是必须保留可交互性？链接是否要可点击？\n3. 数据范围与权限：导出内容是否包含所有历史周报？是否有权限控制或脱敏要求？\n4. 样式要求：是否有固定模板、品牌元素、中文字体要求？\n5. 验收标准：如何判断导出成功？例如图表完整、链接有效、排版不溢出。\n\n补充后可以再评估拆分和排期。",
+            "task_breakdown": null
+          },
+          "confidence": 0.4
+        },
+        "error": null
+      },
+      {
+        "id": "issue-09",
+        "expected": "Feature",
+        "predicted": "Feature",
+        "correct": true,
+        "elapsed_ms": 32019.2,
+        "output": {
+          "summary": "Issue #9 支持 GitHub Enterprise 地址配置 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 只说明需要自定义 API base URL 和证书，缺少目标组件、配置方式、证书格式、认证方式和验收标准，无法进入开发或准确评估工作量。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 backend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向作者确认需要支持哪个组件/服务的 GitHub Enterprise 配置（如 CLI、后端、CI 集成）",
+            "确认现有 API base URL 配置方式及是否需要新增环境变量或配置文件",
+            "确认证书类型：CA 证书、客户端证书，或是否允许忽略 TLS 校验",
+            "确认认证方式：个人 token、GitHub App、OAuth，以及内网地址格式",
+            "补充复现步骤/使用场景和验收标准，例如用内网 GHE 实例完成一次 API 调用"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "@engineer 为了准确评估，请补充：1) 这个配置用于哪个组件？2) 现有代码中 API base URL 和证书如何配置？3) 内网 GHE 的认证方式和证书格式是什么？4) 期望的验收标准是什么？",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-10",
+        "expected": "Feature",
+        "predicted": "Feature",
+        "correct": true,
+        "elapsed_ms": 35484.92,
+        "output": {
+          "summary": "Issue #10 为团队成员增加技能标签 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #10: 为团队成员增加技能标签",
+              "snippet": "为团队成员增加技能标签\n分配 Issue 时希望根据语言、框架和历史模块匹配负责人。",
+              "reference": "10",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #10 为团队成员增加技能标签，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-11",
+        "expected": "Documentation",
+        "predicted": "Documentation",
+        "correct": true,
+        "elapsed_ms": 46400.91,
+        "output": {
+          "summary": "Issue #11 README 的本地启动步骤缺少环境变量说明 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Documentation",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 docs 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #11: README 的本地启动步骤缺少环境变量说明",
+              "snippet": "README 的本地启动步骤缺少环境变量说明\n新同学不知道需要先复制 .env.example，也不知道哪些变量必填。",
+              "reference": "11",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #11 README 的本地启动步骤缺少环境变量说明，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-12",
+        "expected": "Documentation",
+        "predicted": "Documentation",
+        "correct": true,
+        "elapsed_ms": 35874.36,
+        "output": {
+          "summary": "Issue #12 API 文档没有给出 429 限流错误示例 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Documentation",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 backend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #12: API 文档没有给出 429 限流错误示例",
+              "snippet": "API 文档没有给出 429 限流错误示例\n客户端需要知道限流响应结构和重试建议。",
+              "reference": "12",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #12 API 文档没有给出 429 限流错误示例，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-13",
+        "expected": "Documentation",
+        "predicted": "Documentation",
+        "correct": true,
+        "elapsed_ms": 52686.63,
+        "output": {
+          "summary": "Issue #13 部署指南里的 Docker 命令已过期 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Documentation",
+          "priority": "P2",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 docs 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #13: 部署指南里的 Docker 命令已过期",
+              "snippet": "部署指南里的 Docker 命令已过期\n文档里的镜像名和 compose 服务名已经与当前仓库不一致。",
+              "reference": "13",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #13 部署指南里的 Docker 命令已过期，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-14",
+        "expected": "Documentation",
+        "predicted": "Documentation",
+        "correct": true,
+        "elapsed_ms": 40892.44,
+        "output": {
+          "summary": "Issue #14 贡献指南没有说明提交信息格式 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 要求补充 commit message 约定和 PR 模板示例，但未提供具体格式约定、模板内容示例或现有贡献指南位置；在缺少这些关键信息的情况下无法直接编写文档，需要先与提出者确认。",
+          "category": "Documentation",
+          "priority": "P2",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 docs 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 engineer 确认期望的 commit message 格式（例如 Conventional Commits 或其他内部规范）",
+            "确认贡献指南文件路径以及是否已有 PR 模板",
+            "确认 PR 模板需要包含哪些部分（如关联 Issue、测试说明、截图等）",
+            "明确文档修改的验收标准（例如指定格式说明、示例数量）"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出该需求。在开始修改贡献指南前，需要确认：1) 期望采用哪种 commit message 格式（如 Conventional Commits、Gitmoji 等）？2) 是否已有 PR 模板文件？如果有，位置在哪里？3) 希望 PR 模板示例包含哪些字段或说明？请补充这些信息，以便准确补充文档。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-15",
+        "expected": "Test",
+        "predicted": "Test",
+        "correct": true,
+        "elapsed_ms": 43208.58,
+        "output": {
+          "summary": "Issue #15 为 retrieval 的父块扩展补充单测 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Test",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #15: 为 retrieval 的父块扩展补充单测",
+              "snippet": "为 retrieval 的父块扩展补充单测\n当前只测了检索排序，没有覆盖相邻块拼接和版本不一致的场景。",
+              "reference": "15",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #15 为 retrieval 的父块扩展补充单测，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-16",
+        "expected": "Test",
+        "predicted": "Test",
+        "correct": true,
+        "elapsed_ms": 55745.0,
+        "output": {
+          "summary": "Issue #16 pytest 覆盖率门槛需要提高到 80% 的建议结论是：等待澄清。",
+          "conclusion": "进入开发",
+          "conclusion_reason": "Issue 标题和正文明确要求将 pytest 覆盖率门槛设为 80%，并在低于阈值时使 CI 失败；这是一个具体、可执行的质量改进任务，虽然有实现细节需确认，但不构成阻塞。",
+          "category": "Test",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 ci 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "确认项目使用的 CI 系统（如 GitHub Actions）及现有 pytest 命令位置。",
+            "添加覆盖率工具（如 pytest-cov）到测试依赖。",
+            "在 CI 测试步骤中配置 pytest --cov 并设置 --cov-fail-under=80。",
+            "生成覆盖率报告并集成到 CI 产物或 PR 检查中。",
+            "验证当覆盖率低于 80% 时 CI 会失败。",
+            "更新项目文档，说明覆盖率要求和本地运行方式。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "在开始实现前，请确认几个细节：1) 80% 是行覆盖率还是分支覆盖率？2) 覆盖率统计范围是否排除测试代码、迁移文件或第三方代码？3) 使用哪个 CI 平台？4) 是否已安装 pytest-cov 或需要新增依赖？",
+            "task_breakdown": null
+          },
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "issue-17",
+        "expected": "Test",
+        "predicted": "Test",
+        "correct": true,
+        "elapsed_ms": 60781.33,
+        "output": {
+          "summary": "Issue #17 增加 GitHub 分页同步的集成测试 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Test",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #17: 增加 GitHub 分页同步的集成测试",
+              "snippet": "增加 GitHub 分页同步的集成测试\n需要模拟 Link header 翻页、限流和部分失败，验证同步状态是否正确。",
+              "reference": "17",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #17 增加 GitHub 分页同步的集成测试，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-18",
+        "expected": "Test",
+        "predicted": "Test",
+        "correct": true,
+        "elapsed_ms": 60556.69,
+        "output": {
+          "summary": "Issue #18 前端聊天组件缺少交互测试 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Test",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #18: 前端聊天组件缺少交互测试",
+              "snippet": "前端聊天组件缺少交互测试\n发送消息、流式渲染和错误提示都没有自动化测试。",
+              "reference": "18",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #18 前端聊天组件缺少交互测试，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-19",
+        "expected": "Ops",
+        "predicted": "Ops",
+        "correct": true,
+        "elapsed_ms": 64175.67,
+        "output": {
+          "summary": "Issue #19 CI 的 Node 缓存导致 lockfile 不一致 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Ops",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 ci 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #19: CI 的 Node 缓存导致 lockfile 不一致",
+              "snippet": "CI 的 Node 缓存导致 lockfile 不一致\n缓存恢复了旧 node_modules，npm ci 报错，构建随机失败。",
+              "reference": "19",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #19 CI 的 Node 缓存导致 lockfile 不一致，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-20",
+        "expected": "Ops",
+        "predicted": "Ops",
+        "correct": true,
+        "elapsed_ms": 70169.92,
+        "output": {
+          "summary": "Issue #20 生产环境镜像构建时间超过 20 分钟 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Ops",
+          "priority": "P1",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #20: 生产环境镜像构建时间超过 20 分钟",
+              "snippet": "生产环境镜像构建时间超过 20 分钟\n希望增加多阶段构建和依赖层缓存，缩短发布等待时间。",
+              "reference": "20",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #20 生产环境镜像构建时间超过 20 分钟，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-21",
+        "expected": "Ops",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 57688.75,
+        "output": {
+          "summary": "Issue #21 需要为 staging 增加自动回滚脚本 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 描述了目标但缺少部署工具、触发条件、回滚范围、验收标准及现有 CI/CD 信息，无法直接进入开发、拆分或关闭；需要先澄清实现细节和影响范围，因此结论为等待澄清。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认部署/发布工具或平台（如 Kubernetes、Helm、ArgoCD、ECS 等）",
+            "确认回滚触发条件：手动触发还是自动检测失败后触发",
+            "确认回滚范围：仅回滚镜像 tag，还是包含配置/数据库变更",
+            "补充验收标准：如何定义回滚成功（例如健康检查通过、版本回退等）",
+            "确认 staging 环境现有部署流程和镜像仓库访问方式"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "在开始实现前，需要补充以下信息：1）使用的部署平台/工具；2）回滚触发方式；3）回滚范围是否包含配置；4）验收标准。请提供相关细节，以便设计自动回滚脚本。",
+            "task_breakdown": null
+          },
+          "confidence": 0.3
+        },
+        "error": null
+      },
+      {
+        "id": "issue-22",
+        "expected": "Ops",
+        "predicted": "Ops",
+        "correct": true,
+        "elapsed_ms": 68032.23,
+        "output": {
+          "summary": "Issue #22 GitHub Actions 权限不足，无法上传 artifact 的建议结论是：进入开发。",
+          "conclusion": "进入开发",
+          "conclusion_reason": "Issue 信息基本可执行，优先确认验收口径后进入开发。",
+          "category": "Ops",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 ci 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #22: GitHub Actions 权限不足，无法上传 artifact",
+              "snippet": "GitHub Actions 权限不足，无法上传 artifact\nworkflow 的 permissions 没有 actions: write，上传步骤被拒绝。",
+              "reference": "22",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "确认 Issue 验收标准和不做范围。",
+            "定位相关代码/文档位置并补充设计备注。",
+            "创建开发分支并实现最小修复/功能增量。",
+            "补充自动化测试或手工验证步骤。",
+            "提交 PR 并在描述中关联该 Issue。"
+          ],
+          "action_items": [
+            "确认 Issue 验收标准和不做范围。",
+            "定位相关代码/文档位置并补充设计备注。",
+            "创建开发分支并实现最小修复/功能增量。",
+            "补充自动化测试或手工验证步骤。",
+            "提交 PR 并在描述中关联该 Issue。"
+          ],
+          "drafts": {
+            "clarification_comment": null,
+            "task_breakdown": "建议下一步拆解：\n- 确认 Issue 验收标准和不做范围。\n- 定位相关代码/文档位置并补充设计备注。\n- 创建开发分支并实现最小修复/功能增量。\n- 补充自动化测试或手工验证步骤。\n- 提交 PR 并在描述中关联该 Issue。"
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-23",
+        "expected": "Refactor",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 73537.1,
+        "output": {
+          "summary": "Issue #23 把仓库同步服务拆成 issue/pr/actions 三个模块 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 仅提出按数据源拆分 repos_sync.py 的意图，但未提供该文件的具体路径、现有函数与职责分布、issue/pr/actions 三个模块的边界定义、验收标准以及影响范围；缺少这些信息无法安全规划重构，且容易引入回归风险，因此需要先澄清。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 ci 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认 repos_sync.py 在仓库中的确切路径和当前行数/主要函数",
+            "确认 issue/pr/actions 三个数据源对应的同步逻辑现状与重叠点",
+            "明确三个新模块的职责边界、公共接口和数据流",
+            "补充验收标准（例如：拆分后行为不变、测试通过、无新增依赖）",
+            "评估拆分对现有调用方和定时任务的影响范围",
+            "确认是否需要与现有重构 Issue 合并或单独跟踪"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出拆分需求。为准确评估并规划本次重构，请补充以下信息：\n1. repos_sync.py 在仓库中的完整路径，以及当前大约多少行、包含哪些主要函数？\n2. issue / pr / actions 三个数据源各自的同步逻辑目前是如何组织的？是否已有清晰边界？\n3. 期望的模块命名、职责范围和接口是什么？\n4. 拆分后的验收标准是什么（例如单元测试、集成测试、行为不变等）？\n5. 本次拆分是否会影响现有调用方或部署流程？",
+            "task_breakdown": null
+          },
+          "confidence": 0.4
+        },
+        "error": null
+      },
+      {
+        "id": "issue-24",
+        "expected": "Refactor",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 74608.83,
+        "output": {
+          "summary": "Issue #24 移除重复的 token 解析工具函数 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 只说明了存在三个模块重复实现 JWT 解析、需要统一到一个工具函数，但未提供模块名称/路径、现有实现之间的行为差异、目标工具函数位置、验收标准或测试要求。在缺少这些关键信息时直接进入开发可能会引入行为不一致或安全回归，因此需要先澄清。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 backend 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认三个模块的名称和代码路径",
+            "审计现有三个 JWT 解析实现，对比算法允许列表、claims 校验、过期时间处理、错误处理等行为差异",
+            "明确统一后的工具函数应放置的位置（例如 utils/token 或 auth/token）",
+            "确认是否已有可复用的 JWT 解析工具或第三方库封装，避免重复造轮子",
+            "与团队确认是否要求保持向后兼容，有无调用方依赖现有函数签名",
+            "补充验收标准：所有调用方替换完成后行为一致，且至少保留或补充原有测试"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出这个重构。为了安全地统一 JWT 解析，请补充以下信息：\n1. 三个模块的名称和文件路径分别是什么？\n2. 现有三个实现是否存在行为差异（例如支持的签名算法、aud/iss/exp 校验、错误返回方式）？\n3. 新增的统一工具函数期望放在哪个位置？\n4. 是否需要保持现有函数签名或导出名兼容？\n5. 是否有现有测试覆盖这些解析逻辑？如果没有，是否需要在本次统一中补充测试？",
+            "task_breakdown": null
+          },
+          "confidence": 0.5
+        },
+        "error": null
+      },
+      {
+        "id": "issue-25",
+        "expected": "Refactor",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 89543.3,
+        "output": {
+          "summary": "Issue #25 将 chat.py 里的路由工厂抽成独立文件 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #25: 将 chat.py 里的路由工厂抽成独立文件",
+              "snippet": "将 chat.py 里的路由工厂抽成独立文件\n路由文件超过两千行，希望按工具域拆分，保持行为不变。",
+              "reference": "25",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #25 将 chat.py 里的路由工厂抽成独立文件，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-26",
+        "expected": "Refactor",
+        "predicted": "Bug",
+        "correct": false,
+        "elapsed_ms": 79710.9,
+        "output": {
+          "summary": "Issue #26 统一后端错误响应结构 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Bug",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #26: 统一后端错误响应结构",
+              "snippet": "统一后端错误响应结构\n目前有的接口返回 detail，有的返回 error，客户端处理不一致。",
+              "reference": "26",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #26 统一后端错误响应结构，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-27",
+        "expected": "Question",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 78612.61,
+        "output": {
+          "summary": "Issue #27 RAG 的 score_threshold 为什么默认是 0.8？ 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 仅包含关于 score_threshold 默认值的询问，未明确是请求修改默认值、报告问题还是寻求文档解释；缺少复现步骤、验收标准、影响范围和期望行为，无法直接进入开发或关闭。",
+          "category": "Feature",
+          "priority": "P3",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向作者确认：是希望修改默认值，还是仅需要解释/文档？",
+            "补充当前使用的 embedding 模型和 reranker 组合，以及预期场景。",
+            "如果涉及修改，提供具体问题表现、复现步骤和期望阈值。",
+            "确认是否已有相关配置文档或代码位置。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出这个问题。为了准确处理，请澄清：1) 您是想了解为什么默认是 0.8，还是希望调整默认值或增加配置选项？2) 您目前使用哪些 embedding 和 reranker？3) 如果遇到了问题，请提供复现步骤和期望行为。",
+            "task_breakdown": null
+          },
+          "confidence": 0.4
+        },
+        "error": null
+      },
+      {
+        "id": "issue-28",
+        "expected": "Question",
+        "predicted": "Documentation",
+        "correct": false,
+        "elapsed_ms": 81546.5,
+        "output": {
+          "summary": "Issue #28 这个项目如何在不启动 Milvus 的情况下演示？ 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue 只提出了问题，但未提供项目上下文、现有架构、Docker 环境依赖关系以及期望的演示场景。无法基于当前信息判断具体哪些功能会降级或需要改动，因此必须先澄清需求后再决定是进入开发、编写文档还是关闭。",
+          "category": "Documentation",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员；这个 Issue 更像 docs 方向，请先在团队面板添加对应开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向 issue 作者确认项目仓库、技术栈和当前演示方式",
+            "明确没有 Docker 环境是否等同于没有 Milvus，或其他替代运行方式",
+            "列出项目中依赖 Milvus 的功能点，并评估在没有 Milvus 时是否可降级、替换或 mock",
+            "整理一份演示指南或降级方案文档",
+            "如果涉及代码改动，创建可执行的任务拆分并提交开发评审"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出此问题。为了准确评估如何在无 Docker 环境（且不启动 Milvus）下演示，请补充以下信息：\n1. 项目仓库地址及主要技术栈；\n2. 当前演示流程是否完全依赖 Docker 和 Milvus？是否已有部分功能不依赖 Milvus？\n3. 您期望的演示场景是什么？例如仅展示 UI、核心算法逻辑还是端到端流程？\n4. 是否可以接受使用 mock 数据或替代向量存储来演示？\n5. 如果没有 Docker 环境但可以安装 Milvus 二进制或使用远程服务，是否满足演示需求？",
+            "task_breakdown": null
+          },
+          "confidence": 0.5
+        },
+        "error": null
+      },
+      {
+        "id": "issue-29",
+        "expected": "Question",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 86599.81,
+        "output": {
+          "summary": "Issue #29 IssueAgent 和 PRReviewAgent 分别适合什么场景？ 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "当前描述缺少影响范围、复现/验收条件或期望结果，直接进入开发风险较高。",
+          "category": "Feature",
+          "priority": "P2",
+          "complexity": "M",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [
+            {
+              "source_type": "issue",
+              "title": "Issue #29: IssueAgent 和 PRReviewAgent 分别适合什么场景？",
+              "snippet": "IssueAgent 和 PRReviewAgent 分别适合什么场景？\n两者都能做工程分析，团队应该如何选择调用？",
+              "reference": "29",
+              "confidence": 1.0
+            }
+          ],
+          "checklist": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "针对 Issue #29 IssueAgent 和 PRReviewAgent 分别适合什么场景？，目前信息还不足以直接进入开发。请补充：影响范围、复现步骤/使用场景、期望结果、实际结果，以及是否有日志、截图或相关版本信息。",
+            "task_breakdown": null
+          },
+          "confidence": 0.45
+        },
+        "error": null
+      },
+      {
+        "id": "issue-30",
+        "expected": "Question",
+        "predicted": "Feature",
+        "correct": false,
+        "elapsed_ms": 89074.85,
+        "output": {
+          "summary": "Issue #30 为什么源码不进入向量库？ 的建议结论是：等待澄清。",
+          "conclusion": "等待澄清",
+          "conclusion_reason": "Issue #30 是开放式提问，询问源码检索为何优先使用 workspace 工具而非 RAG。输入没有提供复现步骤、验收标准、期望行为变更或影响范围，无法判断它是请求设计解释还是建议修改实现，因此不能进入开发，需要等待作者澄清意图。",
+          "category": "Feature",
+          "priority": "P3",
+          "complexity": "S",
+          "suggested_owner": "待分配",
+          "owner_reason": "当前项目还没有添加团队成员，请先在团队面板添加开发成员后再分配。",
+          "duplicate_candidates": [],
+          "evidence": [],
+          "checklist": [
+            "向作者确认该Issue的目的：是要求解释现有设计决策，还是提议改用RAG向量检索？",
+            "如果提议改用RAG，请作者补充预期收益、影响范围、验收标准和潜在风险。",
+            "如果只是提问，建议关闭或转移到讨论区/文档，并补充设计决策说明。"
+          ],
+          "action_items": [
+            "请补充问题背景、影响范围和用户场景。",
+            "Bug 类问题补充复现步骤、期望结果、实际结果和日志/截图。",
+            "Feature 类需求补充验收标准和非目标范围。",
+            "澄清后重新运行 Issue Agent 分析。"
+          ],
+          "drafts": {
+            "clarification_comment": "感谢提出这个问题。为了正确处理，请澄清：您是想了解当前源码检索优先使用 workspace 工具而非 RAG 的设计原因，还是希望提议将源码纳入向量库并调整检索策略？如果是后者，请补充预期收益、影响范围（哪些代码路径/用户）、验收标准和风险。当前信息不足以进入开发或修改。",
+            "task_breakdown": null
+          },
+          "confidence": 0.6
+        },
+        "error": null
+      }
+    ],
+    "pr": [
+      {
+        "id": "pr-01",
+        "has_bug": true,
+        "bug_type": "sql_injection",
+        "detected": false,
+        "elapsed_ms": 104621.04,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #201 修改了 1 个文件，主要集中在 backend/app/repositories/user_repo.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #201，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +8 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/repositories/user_repo.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/repositories/user_repo.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-02",
+        "has_bug": true,
+        "bug_type": "missing_auth",
+        "detected": false,
+        "elapsed_ms": 103969.5,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #202 修改了 1 个文件，主要集中在 backend/app/api/routes/admin.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #202，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +12 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/api/routes/admin.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/api/routes/admin.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-03",
+        "has_bug": true,
+        "bug_type": "hardcoded_secret",
+        "detected": true,
+        "elapsed_ms": 107671.77,
+        "merge_recommendation": "拒绝",
+        "finding_text": "硬编码 stripe live secret key backend/app/core/config.py 新增 stripe_secret_key = \"sk_live_51hxexamplereallookingkey\" 立即轮换该 stripe 密钥，从代码中移除硬编码，改用环境变量或密钥管理服务注入；确认 payment_enabled 不应默认开启\nbackend/app/core/config.py 硬编码 stripe live secret key，必须立即移除、轮换密钥并使用环境变量/密钥管理\n硬编码 stripe live secret key：立即轮换该 stripe 密钥，从代码中移除硬编码，改用环境变量或密钥管理服务注入；确认 payment_enabled 不应默认开启",
+        "output": {
+          "summary": "PR #203 修改了 1 个文件，主要集中在 backend/app/core/config.py。",
+          "plan": [
+            "审查 PR 变更文件与 diff",
+            "检查敏感信息与密钥是否硬编码",
+            "评估支付开关与配置安全性",
+            "判断是否存在阻断合并的问题"
+          ],
+          "executed_steps": [
+            "读取 PR 元数据与变更文件列表",
+            "检查 backend/app/core/config.py 的 diff 内容",
+            "识别硬编码 Stripe live secret key",
+            "确认 PAYMENT_ENABLED 开启",
+            "评估安全影响和合并建议"
+          ],
+          "merge_recommendation": "拒绝",
+          "recommendation_reason": "存在可修复的阻塞项，完成测试或说明补充后可重新评估。",
+          "review_findings": [
+            {
+              "severity": "P1",
+              "title": "硬编码 Stripe live secret key",
+              "evidence": "backend/app/core/config.py 新增 STRIPE_SECRET_KEY = \"sk_live_51HxExampleRealLookingKey\"",
+              "required_action": "立即轮换该 Stripe 密钥，从代码中移除硬编码，改用环境变量或密钥管理服务注入；确认 PAYMENT_ENABLED 不应默认开启",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "在 backend/app/core/config.py 中新增 STRIPE_SECRET_KEY 硬编码值",
+            "新增 PAYMENT_ENABLED = True 开启支付"
+          ],
+          "risk_points": [
+            "Stripe live secret key 硬编码在源码中，会被提交到版本库，存在密钥泄露风险",
+            "PAYMENT_ENABLED 直接开启，可能在生产环境意外启用支付功能",
+            "配置变更未经过环境变量或密钥管理，违反安全最佳实践"
+          ],
+          "blocking_issues": [
+            "backend/app/core/config.py 硬编码 Stripe live secret key，必须立即移除、轮换密钥并使用环境变量/密钥管理",
+            "硬编码 Stripe live secret key：立即轮换该 Stripe 密钥，从代码中移除硬编码，改用环境变量或密钥管理服务注入；确认 PAYMENT_ENABLED 不应默认开启"
+          ],
+          "review_checklist": [
+            "敏感信息未硬编码",
+            "配置通过环境变量或密钥管理加载",
+            "支付功能开关与凭据完整性验证",
+            "变更是否涉及测试或文档更新"
+          ],
+          "test_suggestions": [
+            "验证当 STRIPE_SECRET_KEY 未设置时应用能安全启动并禁用支付",
+            "验证 Stripe 密钥不会出现在 Git 历史或日志中",
+            "添加配置加载测试，确保从环境变量读取"
+          ],
+          "files_need_attention": [
+            "backend/app/core/config.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.64
+        },
+        "error": null
+      },
+      {
+        "id": "pr-04",
+        "has_bug": true,
+        "bug_type": "null_deref",
+        "detected": false,
+        "elapsed_ms": 114731.33,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #204 修改了 1 个文件，主要集中在 backend/app/services/profile.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #204，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +5 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/profile.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/profile.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-05",
+        "has_bug": true,
+        "bug_type": "off_by_one",
+        "detected": true,
+        "elapsed_ms": 104224.32,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "off-by-one error excludes last item from processing `for i in range(len(items) - 1): process(items[i])` iterates from 0 to len(items)-2, so the final element at index len(items)-1 is never processed. change the loop to `for i in range(len(items)):` or use `for item in items: process(item)` to process all items.\nno test coverage for batch processing boundary cases pr only modifies backend/app/services/batch.py and does not include unit tests for empty, single-item, or multiple-item lists. add tests covering empty list, single-item list, and multiple-item list to verify all items are processed and the loop bound is correct.\np1: off-by-one error causes the last item to never be processed.\np2: missing test coverage for list edge cases (empty, single, multiple).\noff-by-one error excludes last item from processing：change the loop to `for i in range(len(items)):` or use `for item in items: process(item)` to process all items.\nno test coverage for batch processing boundary cases：add tests covering empty list, single-item list, and multiple-item list to verify all items are processed and the loop bound is correct.",
+        "output": {
+          "summary": "PR #205 修改了 1 个文件，主要集中在 backend/app/services/batch.py。",
+          "plan": [
+            "Review the changed file backend/app/services/batch.py.",
+            "Check the added loop for correctness and off-by-one errors.",
+            "Assess test coverage and edge cases.",
+            "Determine merge recommendation based on findings."
+          ],
+          "executed_steps": [
+            "Parsed PR metadata and diff for backend/app/services/batch.py.",
+            "Inspected the added loop `for i in range(len(items) - 1): process(items[i])`.",
+            "Identified that the loop upper bound excludes the last item.",
+            "Checked for associated test files or review comments; none were provided.",
+            "Evaluated impact against the PR description '批量处理待办事项'."
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P1",
+              "title": "Off-by-one error excludes last item from processing",
+              "evidence": "`for i in range(len(items) - 1): process(items[i])` iterates from 0 to len(items)-2, so the final element at index len(items)-1 is never processed.",
+              "required_action": "Change the loop to `for i in range(len(items)):` or use `for item in items: process(item)` to process all items.",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "No test coverage for batch processing boundary cases",
+              "evidence": "PR only modifies backend/app/services/batch.py and does not include unit tests for empty, single-item, or multiple-item lists.",
+              "required_action": "Add tests covering empty list, single-item list, and multiple-item list to verify all items are processed and the loop bound is correct.",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "Added a for loop to process items in backend/app/services/batch.py."
+          ],
+          "risk_points": [
+            "The loop uses `range(len(items) - 1)`, which skips the last item in the list.",
+            "No tests were added or referenced for the new batch processing logic.",
+            "Empty list and single-item list behavior are not covered."
+          ],
+          "blocking_issues": [
+            "P1: Off-by-one error causes the last item to never be processed.",
+            "P2: Missing test coverage for list edge cases (empty, single, multiple).",
+            "Off-by-one error excludes last item from processing：Change the loop to `for i in range(len(items)):` or use `for item in items: process(item)` to process all items.",
+            "No test coverage for batch processing boundary cases：Add tests covering empty list, single-item list, and multiple-item list to verify all items are processed and the loop bound is correct."
+          ],
+          "review_checklist": [
+            "Loop bound includes all items (no off-by-one error).",
+            "Empty items list does not crash.",
+            "Single-item list is processed exactly once.",
+            "Multiple items are processed in order, including the last item.",
+            "Unit tests are added for the batch processing logic."
+          ],
+          "test_suggestions": [
+            "Add a unit test with an empty list; ensure no exception is raised.",
+            "Add a unit test with a single item; assert process is called once with that item.",
+            "Add a unit test with multiple items; assert process is called for every item, especially the last one.",
+            "Consider testing error propagation if process() raises an exception."
+          ],
+          "files_need_attention": [
+            "backend/app/services/batch.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-06",
+        "has_bug": true,
+        "bug_type": "race_condition",
+        "detected": false,
+        "elapsed_ms": 121459.24,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #206 修改了 1 个文件，主要集中在 backend/app/services/order.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #206，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +10 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/order.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/order.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-07",
+        "has_bug": true,
+        "bug_type": "path_traversal",
+        "detected": true,
+        "elapsed_ms": 118663.98,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "路径遍历（path traversal）风险 diff 中新增：path = os.path.join(upload_dir, filename) 与 return fileresponse(path)，未看到对 filename 的过滤或规范化。filename 极可能来自请求参数，用户可传入类似 ../../secret 的值，os.path.join 不会阻止目录穿越。 使用 os.path.basename(filename) 去除路径分隔符，或使用 os.path.realpath 校验最终路径必须位于 upload_dir 内（startswith 前缀检查），并拒绝空文件名或包含路径分隔符的输入。添加对应的安全测试。\n缺少下载端点的测试覆盖 pr 未包含任何测试文件变更，无法验证下载功能正确性、路径遍历防护及错误处理。 补充单元/集成测试：合法文件名应返回文件内容；不存在文件应返回 404 而非 500；尝试路径遍历应被拒绝且不访问外部文件；若存在鉴权，验证未授权访问被拒绝。\n缺少文件存在性与错误处理 diff 中直接返回 fileresponse(path)，没有检查 os.path.exists 或 try/except，若文件不存在可能抛出未处理异常。 添加文件存在性检查，返回明确的 404 或 410 响应，并捕获可能的 oserror。\np1: 路径遍历漏洞，filename 直接拼接到 upload_dir 后，攻击者可构造 ../../etc/passwd 等路径读取敏感文件\np2: 缺少针对下载端点（合法文件、缺失文件、路径遍历、未授权访问）的测试\n路径遍历（path traversal）风险：使用 os.path.basename(filename) 去除路径分隔符，或使用 os.path.realpath 校验最终路径必须位于 upload_dir 内（startswith 前缀检查），并拒绝空文件名或包含路径分隔符的输入。添加对应的安全测试。\n缺少下载端点的测试覆盖：补充单元/集成测试：合法文件名应返回文件内容；不存在文件应返回 404 而非 500；尝试路径遍历应被拒绝且不访问外部文件；若存在鉴权，验证未授权访问被拒绝。",
+        "output": {
+          "summary": "PR #207 修改了 1 个文件，主要集中在 backend/app/api/routes/files.py。",
+          "plan": [
+            "审查 PR 标题与正文，确认变更意图",
+            "检查 diff 中文件下载路径构造逻辑",
+            "分析 filename 参数来源与可能的安全风险",
+            "检查是否包含测试与异常处理",
+            "评估是否需要阻塞合并并给出修改建议"
+          ],
+          "executed_steps": [
+            "读取 PR 元数据：标题 Add attachment download，正文按文件名下载附件",
+            "检查变更文件 backend/app/api/routes/files.py 的 diff，仅看到新增两行：path = os.path.join(UPLOAD_DIR, filename) 与 return FileResponse(path)",
+            "根据 diff 推断 filename 可能来自请求参数（未在 diff 中看到参数来源），检查是否存在路径遍历防护",
+            "检查是否有测试文件变更，未发现任何测试新增",
+            "检查是否有错误处理、鉴权、文件存在性验证等逻辑，未在 diff 中看到"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P1",
+              "title": "路径遍历（Path Traversal）风险",
+              "evidence": "diff 中新增：path = os.path.join(UPLOAD_DIR, filename) 与 return FileResponse(path)，未看到对 filename 的过滤或规范化。filename 极可能来自请求参数，用户可传入类似 ../../secret 的值，os.path.join 不会阻止目录穿越。",
+              "required_action": "使用 os.path.basename(filename) 去除路径分隔符，或使用 os.path.realpath 校验最终路径必须位于 UPLOAD_DIR 内（startswith 前缀检查），并拒绝空文件名或包含路径分隔符的输入。添加对应的安全测试。",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "缺少下载端点的测试覆盖",
+              "evidence": "PR 未包含任何测试文件变更，无法验证下载功能正确性、路径遍历防护及错误处理。",
+              "required_action": "补充单元/集成测试：合法文件名应返回文件内容；不存在文件应返回 404 而非 500；尝试路径遍历应被拒绝且不访问外部文件；若存在鉴权，验证未授权访问被拒绝。",
+              "blocking": true
+            },
+            {
+              "severity": "P3",
+              "title": "缺少文件存在性与错误处理",
+              "evidence": "diff 中直接返回 FileResponse(path)，没有检查 os.path.exists 或 try/except，若文件不存在可能抛出未处理异常。",
+              "required_action": "添加文件存在性检查，返回明确的 404 或 410 响应，并捕获可能的 OSError。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "新增附件下载端点：使用 os.path.join(UPLOAD_DIR, filename) 构造文件路径，并返回 FileResponse"
+          ],
+          "risk_points": [
+            "filename 未做任何校验，可能包含 ../ 路径分隔符，导致路径遍历漏洞，读取 UPLOAD_DIR 之外的文件",
+            "未看到鉴权或授权检查，任何用户可能下载任意附件（若 filename 可控）",
+            "未处理文件不存在、权限不足等异常情况，可能导致 500 或信息泄露",
+            "缺少测试覆盖，无法验证下载行为与安全边界"
+          ],
+          "blocking_issues": [
+            "P1: 路径遍历漏洞，filename 直接拼接到 UPLOAD_DIR 后，攻击者可构造 ../../etc/passwd 等路径读取敏感文件",
+            "P2: 缺少针对下载端点（合法文件、缺失文件、路径遍历、未授权访问）的测试",
+            "路径遍历（Path Traversal）风险：使用 os.path.basename(filename) 去除路径分隔符，或使用 os.path.realpath 校验最终路径必须位于 UPLOAD_DIR 内（startswith 前缀检查），并拒绝空文件名或包含路径分隔符的输入。添加对应的安全测试。",
+            "缺少下载端点的测试覆盖：补充单元/集成测试：合法文件名应返回文件内容；不存在文件应返回 404 而非 500；尝试路径遍历应被拒绝且不访问外部文件；若存在鉴权，验证未授权访问被拒绝。"
+          ],
+          "review_checklist": [
+            "filename 是否来自用户输入？若是，如何过滤？",
+            "是否验证最终路径仍位于 UPLOAD_DIR 下？",
+            "下载端点是否需要鉴权？当前是否已实现？",
+            "文件不存在、权限错误时返回什么响应？",
+            "是否设置了合适的 Content-Disposition 和 Content-Type？",
+            "是否包含对应测试？"
+          ],
+          "test_suggestions": [
+            "测试合法文件名能正确下载并返回文件内容",
+            "测试文件名包含 ../ 或绝对路径时被拒绝",
+            "测试文件名包含特殊字符（空格、中文、URL 编码）的处理",
+            "测试文件不存在时返回 404 且不泄露内部路径",
+            "测试无权限用户是否能下载其他用户的附件",
+            "测试大文件下载的性能与内存占用"
+          ],
+          "files_need_attention": [
+            "backend/app/api/routes/files.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-08",
+        "has_bug": true,
+        "bug_type": "n_plus_one",
+        "detected": false,
+        "elapsed_ms": 123681.56,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #208 修改了 1 个文件，主要集中在 backend/app/services/report.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #208，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +9 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/report.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/report.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-09",
+        "has_bug": true,
+        "bug_type": "missing_error_handling",
+        "detected": false,
+        "elapsed_ms": 133232.75,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #209 修改了 1 个文件，主要集中在 backend/app/services/github/client.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #209，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +5 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/github/client.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/github/client.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-10",
+        "has_bug": true,
+        "bug_type": "broken_migration",
+        "detected": true,
+        "elapsed_ms": 138489.92,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "  高敏感文件需要重点审查：backend/migrations/0007_add_email.sql 补充代码审查记录、回归测试或人工验证说明。\n  当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。 补充自动化测试，或留下可复核的手工验证记录。\n当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+        "output": {
+          "summary": "PR #210 修改了 1 个文件，主要集中在 backend/migrations/0007_add_email.sql。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #210，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +3 / -0。",
+            "已识别 1 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：修改后合入。"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "存在可修复的阻塞项，完成测试或说明补充后可重新评估。",
+          "review_findings": [
+            {
+              "severity": "P2",
+              "title": "敏感文件变更需要重点验证",
+              "evidence": "高敏感文件需要重点审查：backend/migrations/0007_add_email.sql",
+              "required_action": "补充代码审查记录、回归测试或人工验证说明。",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "缺少测试覆盖证明",
+              "evidence": "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+              "required_action": "补充自动化测试，或留下可复核的手工验证记录。",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "更新 backend/migrations/0007_add_email.sql"
+          ],
+          "risk_points": [
+            "高敏感文件需要重点审查：backend/migrations/0007_add_email.sql"
+          ],
+          "blocking_issues": [
+            "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。"
+          ],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界",
+            "对敏感文件补充回归测试或人工验证记录"
+          ],
+          "files_need_attention": [
+            "backend/migrations/0007_add_email.sql"
+          ],
+          "review_comments": [],
+          "confidence": 0.64
+        },
+        "error": null
+      },
+      {
+        "id": "pr-11",
+        "has_bug": true,
+        "bug_type": "xss",
+        "detected": false,
+        "elapsed_ms": 122344.89,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #211 修改了 1 个文件，主要集中在 frontend/components/comment.tsx。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #211，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +4 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 frontend/components/comment.tsx"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行前端类型检查/构建，并覆盖关键页面交互"
+          ],
+          "files_need_attention": [
+            "frontend/components/comment.tsx"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-12",
+        "has_bug": true,
+        "bug_type": "deserialization",
+        "detected": false,
+        "elapsed_ms": 124334.78,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #212 修改了 1 个文件，主要集中在 backend/app/api/routes/imports.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #212，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +6 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/api/routes/imports.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/api/routes/imports.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-13",
+        "has_bug": true,
+        "bug_type": "missing_timeout",
+        "detected": false,
+        "elapsed_ms": 139730.29,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #213 修改了 1 个文件，主要集中在 backend/app/services/webhook.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #213，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +5 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/webhook.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/webhook.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-14",
+        "has_bug": true,
+        "bug_type": "input_validation",
+        "detected": false,
+        "elapsed_ms": 148923.91,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #214 修改了 1 个文件，主要集中在 backend/app/services/price.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #214，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +5 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/price.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/price.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-15",
+        "has_bug": true,
+        "bug_type": "memory_leak",
+        "detected": true,
+        "elapsed_ms": 152316.47,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "缓存无失效机制且无容量限制，存在数据陈旧与内存风险 get 函数只在 key 不在 _cache 时调用 expensive_query，一旦缓存就永久返回旧值；_cache 永远不会删除条目，没有 ttl、主动失效或容量控制。 增加缓存失效策略（ttl、主动清除、版本号等）并限制缓存容量或实现淘汰策略。\n缺少测试覆盖 pr 未包含任何测试文件修改，新增缓存逻辑无单元测试。 补充单元测试覆盖缓存命中、未命中、失效、并发等场景。\n缓存无失效/ttl 导致数据陈旧，必须修复\n缺少测试覆盖，必须补充\n缓存无失效机制且无容量限制，存在数据陈旧与内存风险：增加缓存失效策略（ttl、主动清除、版本号等）并限制缓存容量或实现淘汰策略。\n缺少测试覆盖：补充单元测试覆盖缓存命中、未命中、失效、并发等场景。",
+        "output": {
+          "summary": "PR #215 修改了 1 个文件，主要集中在 backend/app/services/cache.py。",
+          "plan": [
+            "审查 PR 描述与变更范围",
+            "分析 cache.py 新增缓存逻辑",
+            "检查缓存失效、内存、并发、测试覆盖",
+            "评估合并风险"
+          ],
+          "executed_steps": [
+            "阅读 PR 标题和正文",
+            "检查 diff：backend/app/services/cache.py 新增全局字典 _CACHE 与 get 函数",
+            "分析缓存键管理、失效策略、线程安全、内存上限",
+            "检查测试覆盖（未发现相关测试提交）",
+            "评估数据新鲜度与可用性风险"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P1",
+              "title": "缓存无失效机制且无容量限制，存在数据陈旧与内存风险",
+              "evidence": "get 函数只在 key 不在 _CACHE 时调用 expensive_query，一旦缓存就永久返回旧值；_CACHE 永远不会删除条目，没有 TTL、主动失效或容量控制。",
+              "required_action": "增加缓存失效策略（TTL、主动清除、版本号等）并限制缓存容量或实现淘汰策略。",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "缺少测试覆盖",
+              "evidence": "PR 未包含任何测试文件修改，新增缓存逻辑无单元测试。",
+              "required_action": "补充单元测试覆盖缓存命中、未命中、失效、并发等场景。",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "新增模块级全局字典 _CACHE",
+            "新增 get(key) 函数：若 key 不在缓存则调用 expensive_query(key) 并缓存，否则返回缓存值",
+            "未提供缓存清除、TTL、容量限制等机制"
+          ],
+          "risk_points": [
+            "缓存无失效/TTL，搜索数据更新后可能长期返回旧结果",
+            "缓存无限增长，可能导致内存耗尽",
+            "线程安全：无锁保护，并发下可能重复计算或产生竞争（但 Python dict 操作相对简单，风险中等）",
+            "expensive_query 未定义/导入可能引发 NameError（但上下文不足，需人工确认）",
+            "缺少测试覆盖"
+          ],
+          "blocking_issues": [
+            "缓存无失效/TTL 导致数据陈旧，必须修复",
+            "缺少测试覆盖，必须补充",
+            "缓存无失效机制且无容量限制，存在数据陈旧与内存风险：增加缓存失效策略（TTL、主动清除、版本号等）并限制缓存容量或实现淘汰策略。",
+            "缺少测试覆盖：补充单元测试覆盖缓存命中、未命中、失效、并发等场景。"
+          ],
+          "review_checklist": [
+            "明确缓存失效策略（TTL/主动失效）",
+            "限制缓存容量或实现淘汰策略",
+            "确认 expensive_query 存在且已正确导入",
+            "补充单元测试",
+            "确认多线程环境安全性",
+            "验证搜索数据更新后缓存行为"
+          ],
+          "test_suggestions": [
+            "命中缓存时不再调用 expensive_query",
+            "未命中缓存时调用并存储",
+            "缓存过期或失效后重新查询",
+            "并发 get 调用不产生异常或重复计算",
+            "缓存容量达到上限时的淘汰行为"
+          ],
+          "files_need_attention": [
+            "backend/app/services/cache.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-16",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 155312.15,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "  高敏感文件需要重点审查：backend/app/tests/test_auth.py 补充代码审查记录、回归测试或人工验证说明。\n",
+        "output": {
+          "summary": "PR #216 修改了 1 个文件，主要集中在 backend/app/tests/test_auth.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #216，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +12 / -0。",
+            "已识别 1 个敏感文件、1 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：修改后合入。"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "PR 有明确风险点，建议先完成重点 review 和验证再合入。",
+          "review_findings": [
+            {
+              "severity": "P2",
+              "title": "敏感文件变更需要重点验证",
+              "evidence": "高敏感文件需要重点审查：backend/app/tests/test_auth.py",
+              "required_action": "补充代码审查记录、回归测试或人工验证说明。",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/tests/test_auth.py"
+          ],
+          "risk_points": [
+            "高敏感文件需要重点审查：backend/app/tests/test_auth.py"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界",
+            "对敏感文件补充回归测试或人工验证记录"
+          ],
+          "files_need_attention": [
+            "backend/app/tests/test_auth.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-17",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 143939.34,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #217 修改了 1 个文件，主要集中在 docs/api/openapi.md。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #217，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +6 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 docs/api/openapi.md"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "docs/api/openapi.md"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-18",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 151315.01,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #218 修改了 1 个文件，主要集中在 backend/app/services/repos_sync.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #218，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +3 / -3。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/repos_sync.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/repos_sync.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-19",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 163779.74,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #219 修改了 1 个文件，主要集中在 backend/app/services/repos_sync.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #219，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +4 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/repos_sync.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/repos_sync.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-20",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 162730.24,
+        "merge_recommendation": "建议合入",
+        "finding_text": "返回值缺少类型注解 diff 中新增行为 +def chunk_document(text: str, source_path: str = \"document.txt\"):，未包含 -> 返回类型标注 建议补充函数的返回类型注解，例如根据实际返回内容添加 -> list[str] 或其他合适类型\n",
+        "output": {
+          "summary": "PR #220 修改了 1 个文件，主要集中在 backend/app/services/rag/chunking.py。",
+          "plan": [
+            "审查 PR 的 diff 范围与变更意图",
+            "检查类型注解语法与 Python 版本兼容性",
+            "检查是否引入新的导入或依赖",
+            "评估类型注解对运行时行为的影响",
+            "检查类型注解覆盖的完整性（入参、返回值）"
+          ],
+          "executed_steps": [
+            "读取并审阅 diff_chunks，确认仅 backend/app/services/rag/chunking.py 中 chunk_document 函数签名被修改",
+            "确认新增注解 text: str 与 source_path: str = \"document.txt\" 语法正确",
+            "确认 str 为内置类型，无需新增 import 或 typing 导入",
+            "检查修改未改变函数主体逻辑，仅添加注解，不会影响运行时行为",
+            "识别出返回值类型注解未添加，类型提示不完整"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "返回值缺少类型注解",
+              "evidence": "diff 中新增行为 +def chunk_document(text: str, source_path: str = \"document.txt\"):，未包含 -> 返回类型标注",
+              "required_action": "建议补充函数的返回类型注解，例如根据实际返回内容添加 -> list[str] 或其他合适类型",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "为 chunk_document 函数的 text 和 source_path 参数添加了 str 类型注解"
+          ],
+          "risk_points": [
+            "返回值类型未注解，类型检查工具可能报告不完整或缺失返回注解",
+            "如果项目启用严格类型检查（mypy/pyright），可能需要补充返回类型"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "类型注解语法是否正确：通过",
+            "是否引入额外导入/依赖：否",
+            "是否改变运行时行为：否",
+            "是否完整覆盖参数与返回值：否，缺少返回值注解",
+            "是否有对应静态类型检查配置验证：未提供"
+          ],
+          "test_suggestions": [
+            "无需为纯类型注解修改新增单元测试，因为运行时行为未改变",
+            "若项目使用 mypy，建议运行 mypy backend/app/services/rag/chunking.py 确认无新增错误",
+            "补充返回类型后，可运行 pyright 或项目配置的静态检查以确认通过"
+          ],
+          "files_need_attention": [
+            "backend/app/services/rag/chunking.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-21",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 173468.94,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #221 修改了 1 个文件，主要集中在 backend/app/services/repos_sync.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #221，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +10 / -4。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/repos_sync.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/repos_sync.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-22",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": true,
+        "elapsed_ms": 175515.99,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "  高敏感文件需要重点审查：backend/migrations/0008_documents_index.sql 补充代码审查记录、回归测试或人工验证说明。\n  当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。 补充自动化测试，或留下可复核的手工验证记录。\n当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+        "output": {
+          "summary": "PR #222 修改了 1 个文件，主要集中在 backend/migrations/0008_documents_index.sql。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #222，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +2 / -0。",
+            "已识别 1 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：修改后合入。"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "存在可修复的阻塞项，完成测试或说明补充后可重新评估。",
+          "review_findings": [
+            {
+              "severity": "P2",
+              "title": "敏感文件变更需要重点验证",
+              "evidence": "高敏感文件需要重点审查：backend/migrations/0008_documents_index.sql",
+              "required_action": "补充代码审查记录、回归测试或人工验证说明。",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "缺少测试覆盖证明",
+              "evidence": "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+              "required_action": "补充自动化测试，或留下可复核的手工验证记录。",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "更新 backend/migrations/0008_documents_index.sql"
+          ],
+          "risk_points": [
+            "高敏感文件需要重点审查：backend/migrations/0008_documents_index.sql"
+          ],
+          "blocking_issues": [
+            "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。"
+          ],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界",
+            "对敏感文件补充回归测试或人工验证记录"
+          ],
+          "files_need_attention": [
+            "backend/migrations/0008_documents_index.sql"
+          ],
+          "review_comments": [],
+          "confidence": 0.64
+        },
+        "error": null
+      },
+      {
+        "id": "pr-23",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 184787.39,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #223 修改了 1 个文件，主要集中在 frontend/components/rag/empty-state.tsx。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #223，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +2 / -1。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 frontend/components/rag/empty-state.tsx"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行前端类型检查/构建，并覆盖关键页面交互"
+          ],
+          "files_need_attention": [
+            "frontend/components/rag/empty-state.tsx"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-24",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 185152.01,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #224 修改了 1 个文件，主要集中在 backend/app/services/github/client.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #224，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +2 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/github/client.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/github/client.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-25",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 171680.56,
+        "merge_recommendation": "建议合入",
+        "finding_text": "docstring 语言与 pr 描述不一致 pr body 为中文“补充模块说明”，新增 docstring 为英文“context compression helpers.” 非阻断；若团队有文档语言规范，可统一为中文或英文，否则可忽略\n",
+        "output": {
+          "summary": "PR #225 修改了 1 个文件，主要集中在 backend/app/services/context_compression.py。",
+          "plan": [
+            "确认本次 PR 的变更范围与文件列表",
+            "检查 diff 内容，判断是否仅新增文档字符串",
+            "验证 docstring 语法与 Python 模块 docstring 规范",
+            "检查是否存在逻辑变更、测试影响或未处理 review comments",
+            "评估合并风险并给出分级建议"
+          ],
+          "executed_steps": [
+            "查看 PR 标题、正文、files 列表和 diff_chunks，确认只涉及 backend/app/services/context_compression.py 一个文件",
+            "检查 diff 内容，仅有一行新增：+\\\"\\\"\\\"Context compression helpers.\\\"\\\"\\\"",
+            "确认该新增内容为模块 docstring，未修改任何代码逻辑、函数签名或导入",
+            "对照 Python 模块 docstring 规范（PEP 257），该 docstring 位于模块开头且使用三引号字符串，语法正确",
+            "检查 review comments 列表为空，没有未处理的人工审查意见",
+            "评估测试影响：docstring 不影响运行时行为，无需新增自动化测试"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "Docstring 语言与 PR 描述不一致",
+              "evidence": "PR body 为中文“补充模块说明”，新增 docstring 为英文“Context compression helpers.”",
+              "required_action": "非阻断；若团队有文档语言规范，可统一为中文或英文，否则可忽略",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "backend/app/services/context_compression.py 新增模块 docstring：\\\"\\\"\\\"Context compression helpers.\\\"\\\"\\\""
+          ],
+          "risk_points": [
+            "未发现功能、安全、数据或 CI 层面的风险",
+            "轻微非阻断点：docstring 为英文，PR 描述为中文，可能存在文档语言不一致，但不影响功能"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认新增 docstring 符合团队编码规范",
+            "确认 PR 标题和描述准确反映变更内容",
+            "确认没有隐藏的代码修改（diff 仅显示一行新增）"
+          ],
+          "test_suggestions": [
+            "无需新增自动化测试，docstring 不影响运行时行为",
+            "如希望强制文档规范，可在 CI 中启用 pydocstyle 等 docstring 检查（P3 建议）"
+          ],
+          "files_need_attention": [
+            "backend/app/services/context_compression.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-26",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 190472.91,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #226 修改了 1 个文件，主要集中在 backend/app/api/routes/rag.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #226，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +1 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/api/routes/rag.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/api/routes/rag.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-27",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 183778.0,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #227 修改了 1 个文件，主要集中在 backend/app/services/rag/retrieval.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #227，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +2 / -1。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/rag/retrieval.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/rag/retrieval.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-28",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 187811.87,
+        "merge_recommendation": "修改后合入",
+        "finding_text": "  高敏感文件需要重点审查：.github/workflows/ci.yml 补充代码审查记录、回归测试或人工验证说明。\n  当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。 补充自动化测试，或留下可复核的手工验证记录。\n当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+        "output": {
+          "summary": "PR #228 修改了 1 个文件，主要集中在 .github/workflows/ci.yml。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #228，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +5 / -0。",
+            "已识别 1 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：修改后合入。"
+          ],
+          "merge_recommendation": "修改后合入",
+          "recommendation_reason": "存在可修复的阻塞项，完成测试或说明补充后可重新评估。",
+          "review_findings": [
+            {
+              "severity": "P2",
+              "title": "敏感文件变更需要重点验证",
+              "evidence": "高敏感文件需要重点审查：.github/workflows/ci.yml",
+              "required_action": "补充代码审查记录、回归测试或人工验证说明。",
+              "blocking": true
+            },
+            {
+              "severity": "P2",
+              "title": "缺少测试覆盖证明",
+              "evidence": "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。",
+              "required_action": "补充自动化测试，或留下可复核的手工验证记录。",
+              "blocking": true
+            }
+          ],
+          "key_changes": [
+            "更新 .github/workflows/ci.yml"
+          ],
+          "risk_points": [
+            "高敏感文件需要重点审查：.github/workflows/ci.yml"
+          ],
+          "blocking_issues": [
+            "当前变更缺少明显测试文件，合并前需要补充自动化测试或明确手工验证记录。"
+          ],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "对敏感文件补充回归测试或人工验证记录"
+          ],
+          "files_need_attention": [
+            ".github/workflows/ci.yml"
+          ],
+          "review_comments": [],
+          "confidence": 0.64
+        },
+        "error": null
+      },
+      {
+        "id": "pr-29",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 205617.77,
+        "merge_recommendation": "建议合入",
+        "finding_text": "未发现明确阻断项 基于当前 diff、评论和 ci 摘要，未发现明确 p1/p2 阻断项。 按 checklist 完成最终人工确认。\n",
+        "output": {
+          "summary": "PR #229 修改了 1 个文件，主要集中在 backend/app/services/llm/prompts.py。",
+          "plan": [
+            "理解 PR 标题、描述、分支、变更文件和关联上下文。",
+            "按模块拆分 diff 风险，识别敏感路径和大体量改动。",
+            "读取相关源代码、项目文档和历史会话证据。",
+            "检查 CI 状态、失败记录和现有 review comments。",
+            "形成合入建议、阻塞项、测试建议和 review checklist。"
+          ],
+          "executed_steps": [
+            "已读取 PR #229，状态 open，作者 engineer。",
+            "已扫描 1 个变更文件，合计 +1 / -0。",
+            "已识别 0 个敏感文件、0 个测试相关文件、0 条 review comment。",
+            "已纳入 0 条代码线索、0 条项目文档、0 个失败 CI 信号。",
+            "已输出结论：建议合入。"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "未发现明确阻断项",
+              "evidence": "基于当前 diff、评论和 CI 摘要，未发现明确 P1/P2 阻断项。",
+              "required_action": "按 checklist 完成最终人工确认。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "更新 backend/app/services/llm/prompts.py"
+          ],
+          "risk_points": [
+            "需要确认边界条件和异常路径是否有测试覆盖"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "确认接口兼容性",
+            "确认错误处理路径",
+            "确认测试覆盖关键分支",
+            "确认 review comments 已回应"
+          ],
+          "test_suggestions": [
+            "运行相关单元测试和集成测试",
+            "运行后端 pytest，并覆盖接口或数据库边界"
+          ],
+          "files_need_attention": [
+            "backend/app/services/llm/prompts.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      },
+      {
+        "id": "pr-30",
+        "has_bug": false,
+        "bug_type": "clean",
+        "detected": false,
+        "elapsed_ms": 198571.15,
+        "merge_recommendation": "建议合入",
+        "finding_text": "建议补充类型注解和 docstring 新增函数 make_issue 的签名与实现没有类型注解和 docstring，不利于后续维护。 考虑添加类型注解（如 def make_issue(**overrides: any) -> dict）和简短 docstring 说明函数用途与参数。\n",
+        "output": {
+          "summary": "PR #230 修改了 1 个文件，主要集中在 backend/app/tests/factories.py。",
+          "plan": [
+            "阅读 PR 标题与正文，理解变更目的",
+            "审查 diff 内容，评估代码逻辑正确性",
+            "检查是否存在测试覆盖缺口、安全风险或兼容性问题",
+            "根据 DevFlow 分级规则生成审查结论"
+          ],
+          "executed_steps": [
+            "已阅读 PR #230 标题与正文：新增测试数据工厂 make_issue",
+            "已审查唯一文件 backend/app/tests/factories.py 的 diff",
+            "已检查函数逻辑、参数处理及潜在风险",
+            "已确认 PR 无评论，无历史讨论需要处理",
+            "已按 P1/P2/P3 规则进行分类"
+          ],
+          "merge_recommendation": "建议合入",
+          "recommendation_reason": "未发现明显阻塞项，按 checklist 完成最终确认后可以合入。",
+          "review_findings": [
+            {
+              "severity": "P3",
+              "title": "建议补充类型注解和 docstring",
+              "evidence": "新增函数 make_issue 的签名与实现没有类型注解和 docstring，不利于后续维护。",
+              "required_action": "考虑添加类型注解（如 def make_issue(**overrides: Any) -> dict）和简短 docstring 说明函数用途与参数。",
+              "blocking": false
+            }
+          ],
+          "key_changes": [
+            "在 backend/app/tests/factories.py 中新增 make_issue(**overrides) 工厂函数",
+            "函数返回包含默认字段 title='demo', body='' 的 issue 字典，并允许通过 overrides 覆盖或扩展字段"
+          ],
+          "risk_points": [
+            "函数缺少类型注解和 docstring，可读性略受影响（非阻断）",
+            "如果 overrides 中传入非预期字段，可能影响依赖固定字段的下游测试（但这是测试数据工厂的预期灵活性）",
+            "函数本身没有单元测试，但作为测试辅助工具，其正确性可直接通过使用方测试间接验证"
+          ],
+          "blocking_issues": [],
+          "review_checklist": [
+            "变更文件是否位于测试目录？是，不影响生产代码。",
+            "函数逻辑是否正确？是，默认值与 overrides 合并逻辑合理。",
+            "是否有安全风险？否，无外部输入、无敏感操作。",
+            "是否与现有导入或命名冲突？未见冲突，但需 CI 验证。",
+            "是否有关联的单元测试？无，但该函数本身是测试辅助，可接受。"
+          ],
+          "test_suggestions": [
+            "在 CI 中运行相关测试套件，确认新函数能被正常导入且无语法错误。",
+            "如果后续有多个工厂函数，可考虑增加简单的单元测试验证 overrides 覆盖行为。"
+          ],
+          "files_need_attention": [
+            "backend/app/tests/factories.py"
+          ],
+          "review_comments": [],
+          "confidence": 0.6
+        },
+        "error": null
+      }
+    ],
+    "ci": [
+      {
+        "id": "ci-01",
+        "expected_failure_type": "test",
+        "predicted_failure_type": "test",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+        "elapsed_ms": 203478.07,
+        "output": {
+          "failure_summary": "pytest-auth 执行失败。失败 job：pytest。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "test",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：pytest。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：tests/test_auth.py::test_refresh_token_expiry\nAssertionError: assert 500 == 401\nE   assert 500 == 401。",
+            "已分类失败类型为 test，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "tests/test_auth.py::test_refresh_token_expiry\nAssertionError: assert 500 == 401\nE   assert 500 == 401",
+          "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+          "possible_causes": [
+            "测试断言不一致",
+            "最近变更改变了接口行为",
+            "测试数据或环境初始化不完整"
+          ],
+          "fix_steps": [
+            "本地运行失败测试命令并复现，重点检查 tests/test_auth.py",
+            "对照最近 PR 修改确认预期行为",
+            "修正代码或测试数据后补充回归用例"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "tests/test_auth.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-02",
+        "expected_failure_type": "test",
+        "predicted_failure_type": "test",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+        "elapsed_ms": 207779.51,
+        "output": {
+          "failure_summary": "pytest-export 执行失败。失败 job：pytest。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "test",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：pytest。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：tests/test_export.py::test_export_encoding\nAssertionError: b'\\xe4\\xb8\\xad' not found in exported csv。",
+            "已分类失败类型为 test，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "tests/test_export.py::test_export_encoding\nAssertionError: b'\\xe4\\xb8\\xad' not found in exported csv",
+          "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+          "possible_causes": [
+            "测试断言不一致",
+            "最近变更改变了接口行为",
+            "测试数据或环境初始化不完整"
+          ],
+          "fix_steps": [
+            "本地运行失败测试命令并复现，重点检查 tests/test_export.py",
+            "对照最近 PR 修改确认预期行为",
+            "修正代码或测试数据后补充回归用例"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "tests/test_export.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-03",
+        "expected_failure_type": "test",
+        "predicted_failure_type": "test",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+        "elapsed_ms": 201531.89,
+        "output": {
+          "failure_summary": "pytest-order 执行失败。失败 job：pytest。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "test",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：pytest。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：tests/test_order.py::test_inventory_concurrency\nAssertionError: assert -1 >= 0。",
+            "已分类失败类型为 test，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "tests/test_order.py::test_inventory_concurrency\nAssertionError: assert -1 >= 0",
+          "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+          "possible_causes": [
+            "测试断言不一致",
+            "最近变更改变了接口行为",
+            "测试数据或环境初始化不完整"
+          ],
+          "fix_steps": [
+            "本地运行失败测试命令并复现，重点检查 tests/test_order.py",
+            "对照最近 PR 修改确认预期行为",
+            "修正代码或测试数据后补充回归用例"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "tests/test_order.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-04",
+        "expected_failure_type": "test",
+        "predicted_failure_type": "test",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+        "elapsed_ms": 206472.52,
+        "output": {
+          "failure_summary": "pytest-rag 执行失败。失败 job：pytest。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "test",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：pytest。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：tests/test_rag.py::test_retrieval_parent_expansion\nAssertionError: assert [] == [chunk-2]。",
+            "已分类失败类型为 test，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "tests/test_rag.py::test_retrieval_parent_expansion\nAssertionError: assert [] == [chunk-2]",
+          "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+          "possible_causes": [
+            "测试断言不一致",
+            "最近变更改变了接口行为",
+            "测试数据或环境初始化不完整"
+          ],
+          "fix_steps": [
+            "本地运行失败测试命令并复现，重点检查 tests/test_rag.py",
+            "对照最近 PR 修改确认预期行为",
+            "修正代码或测试数据后补充回归用例"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "tests/test_rag.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-05",
+        "expected_failure_type": "test",
+        "predicted_failure_type": "test",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+        "elapsed_ms": 209499.21,
+        "output": {
+          "failure_summary": "pytest-chunking 执行失败。失败 job：pytest。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "test",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：pytest。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：tests/test_chunking.py::test_chunk_size_limit\nAssertionError: chunk content exceeded max_chars。",
+            "已分类失败类型为 test，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "tests/test_chunking.py::test_chunk_size_limit\nAssertionError: chunk content exceeded max_chars",
+          "root_cause": "失败集中在测试执行阶段（pytest, Run checks），首个错误指向断言、用例或被测行为不一致。",
+          "possible_causes": [
+            "测试断言不一致",
+            "最近变更改变了接口行为",
+            "测试数据或环境初始化不完整"
+          ],
+          "fix_steps": [
+            "本地运行失败测试命令并复现，重点检查 tests/test_chunking.py",
+            "对照最近 PR 修改确认预期行为",
+            "修正代码或测试数据后补充回归用例"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "tests/test_chunking.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-06",
+        "expected_failure_type": "build",
+        "predicted_failure_type": "build",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+        "elapsed_ms": 216067.78,
+        "output": {
+          "failure_summary": "web-build 执行失败。失败 job：build。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "build",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：build。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：next build\n./app/chat/page.tsx:42:18\nType error: Argument of type 'string' is not assignable to parameter of type 'number'.\nTS2345。",
+            "已分类失败类型为 build，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "next build\n./app/chat/page.tsx:42:18\nType error: Argument of type 'string' is not assignable to parameter of type 'number'.\nTS2345",
+          "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+          "possible_causes": [
+            "类型错误或编译错误",
+            "构建配置与代码变更不匹配",
+            "生成产物或路径引用缺失"
+          ],
+          "fix_steps": [
+            "本地运行构建/类型检查命令，重点检查 ./app/chat/page.ts",
+            "修复首个编译或类型错误",
+            "确认生成路径、导入路径和配置文件同步更新"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "./app/chat/page.ts"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-07",
+        "expected_failure_type": "build",
+        "predicted_failure_type": "dependency",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+        "elapsed_ms": 210012.55,
+        "output": {
+          "failure_summary": "web-build 执行失败。失败 job：build。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "dependency",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：build。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：next build\nType error: Cannot find module '@/lib/rag' or its corresponding type declarations.\nTS2307。",
+            "已分类失败类型为 dependency，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "next build\nType error: Cannot find module '@/lib/rag' or its corresponding type declarations.\nTS2307",
+          "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+          "possible_causes": [
+            "依赖版本变化",
+            "lockfile 未同步",
+            "CI 缓存或 registry 配置异常"
+          ],
+          "fix_steps": [
+            "重新安装依赖并确认 lockfile 更新",
+            "检查 package/requirements 与 CI 版本是否一致",
+            "清理 CI 缓存后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-08",
+        "expected_failure_type": "build",
+        "predicted_failure_type": "build",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+        "elapsed_ms": 218629.08,
+        "output": {
+          "failure_summary": "web-build 执行失败。失败 job：build。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "build",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：build。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：webpack 5.90.0\nModule parse failed: Unexpected token (12:7)\nYou may need an appropriate loader.。",
+            "已分类失败类型为 build，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "webpack 5.90.0\nModule parse failed: Unexpected token (12:7)\nYou may need an appropriate loader.",
+          "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+          "possible_causes": [
+            "类型错误或编译错误",
+            "构建配置与代码变更不匹配",
+            "生成产物或路径引用缺失"
+          ],
+          "fix_steps": [
+            "本地运行构建/类型检查命令",
+            "修复首个编译或类型错误",
+            "确认生成路径、导入路径和配置文件同步更新"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-09",
+        "expected_failure_type": "build",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：error[E0308]: mismatched types\n--> src/main.rs:18:9\nexpected `String`, found `&str`",
+        "elapsed_ms": 230365.33,
+        "output": {
+          "failure_summary": "native-build 执行失败。失败 job：build。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：build。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：error[E0308]: mismatched types\n--> src/main.rs:18:9\nexpected `String`, found `&str`。",
+            "已分类失败类型为 unknown，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "error[E0308]: mismatched types\n--> src/main.rs:18:9\nexpected `String`, found `&str`",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：error[E0308]: mismatched types\n--> src/main.rs:18:9\nexpected `String`, found `&str`",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-10",
+        "expected_failure_type": "build",
+        "predicted_failure_type": "build",
+        "failure_type_correct": true,
+        "root_cause_hit": false,
+        "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+        "elapsed_ms": 221059.5,
+        "output": {
+          "failure_summary": "java-build 执行失败。失败 job：build。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "build",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：build。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：[ERROR] COMPILATION ERROR\n[ERROR] /src/Order.java:[22,9] cannot find symbol。",
+            "已分类失败类型为 build，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "[ERROR] COMPILATION ERROR\n[ERROR] /src/Order.java:[22,9] cannot find symbol",
+          "root_cause": "失败集中在构建/类型检查阶段（build, Run checks），首个错误通常来自编译、类型或打包配置问题。",
+          "possible_causes": [
+            "类型错误或编译错误",
+            "构建配置与代码变更不匹配",
+            "生成产物或路径引用缺失"
+          ],
+          "fix_steps": [
+            "本地运行构建/类型检查命令",
+            "修复首个编译或类型错误",
+            "确认生成路径、导入路径和配置文件同步更新"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-11",
+        "expected_failure_type": "dependency",
+        "predicted_failure_type": "dependency",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+        "elapsed_ms": 231634.36,
+        "output": {
+          "failure_summary": "npm-ci 执行失败。失败 job：install。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "dependency",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：install。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：npm ERR! code ERESOLVE\nnpm ERR! ERESOLVE unable to resolve dependency tree\nnpm ERR! peer react@\"^18\" from react-dom@18.2.0。",
+            "已分类失败类型为 dependency，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "npm ERR! code ERESOLVE\nnpm ERR! ERESOLVE unable to resolve dependency tree\nnpm ERR! peer react@\"^18\" from react-dom@18.2.0",
+          "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+          "possible_causes": [
+            "依赖版本变化",
+            "lockfile 未同步",
+            "CI 缓存或 registry 配置异常"
+          ],
+          "fix_steps": [
+            "重新安装依赖并确认 lockfile 更新",
+            "检查 package/requirements 与 CI 版本是否一致",
+            "清理 CI 缓存后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-12",
+        "expected_failure_type": "dependency",
+        "predicted_failure_type": "dependency",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+        "elapsed_ms": 227127.43,
+        "output": {
+          "failure_summary": "pip-install 执行失败。失败 job：install。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "dependency",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：install。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：ERROR: Could not find a version that satisfies the requirement pymilvus==9.9.9\nERROR: No matching distribution found for pymilvus==9.9.9。",
+            "已分类失败类型为 dependency，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "ERROR: Could not find a version that satisfies the requirement pymilvus==9.9.9\nERROR: No matching distribution found for pymilvus==9.9.9",
+          "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+          "possible_causes": [
+            "依赖版本变化",
+            "lockfile 未同步",
+            "CI 缓存或 registry 配置异常"
+          ],
+          "fix_steps": [
+            "重新安装依赖并确认 lockfile 更新",
+            "检查 package/requirements 与 CI 版本是否一致",
+            "清理 CI 缓存后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-13",
+        "expected_failure_type": "dependency",
+        "predicted_failure_type": "dependency",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+        "elapsed_ms": 230124.26,
+        "output": {
+          "failure_summary": "node-install 执行失败。失败 job：install。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "dependency",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：install。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：Error: Cannot find module 'langchain-openai'\nRequire stack:\n- /app/agent.js。",
+            "已分类失败类型为 dependency，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "Error: Cannot find module 'langchain-openai'\nRequire stack:\n- /app/agent.js",
+          "root_cause": "日志显示依赖安装或模块解析失败，优先检查 lockfile、包版本和 CI 缓存。",
+          "possible_causes": [
+            "依赖版本变化",
+            "lockfile 未同步",
+            "CI 缓存或 registry 配置异常"
+          ],
+          "fix_steps": [
+            "重新安装依赖并确认 lockfile 更新",
+            "检查 package/requirements 与 CI 版本是否一致",
+            "清理 CI 缓存后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "/app/agent.js"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-14",
+        "expected_failure_type": "dependency",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：npm ci can only install packages when your package.json and package-lock.json are in sync.\nMissing: zod@3.24.0 from lock file",
+        "elapsed_ms": 225591.81,
+        "output": {
+          "failure_summary": "npm-ci 执行失败。失败 job：install。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：install。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：npm ci can only install packages when your package.json and package-lock.json are in sync.\nMissing: zod@3.24.0 from lock file。",
+            "已分类失败类型为 unknown，关联文件 2 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "npm ci can only install packages when your package.json and package-lock.json are in sync.\nMissing: zod@3.24.0 from lock file",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：npm ci can only install packages when your package.json and package-lock.json are in sync.\nMissing: zod@3.24.0 from lock file",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "package.js",
+            "package-lock.js"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-15",
+        "expected_failure_type": "dependency",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：Installing dependencies from lock file\nHash mismatch for package 'fastapi': expected sha256:abc, got sha256:def",
+        "elapsed_ms": 231837.63,
+        "output": {
+          "failure_summary": "python-poetry 执行失败。失败 job：install。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：install。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：Installing dependencies from lock file\nHash mismatch for package 'fastapi': expected sha256:abc, got sha256:def。",
+            "已分类失败类型为 unknown，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "Installing dependencies from lock file\nHash mismatch for package 'fastapi': expected sha256:abc, got sha256:def",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：Installing dependencies from lock file\nHash mismatch for package 'fastapi': expected sha256:abc, got sha256:def",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-16",
+        "expected_failure_type": "permission",
+        "predicted_failure_type": "permission",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+        "elapsed_ms": 238261.0,
+        "output": {
+          "failure_summary": "gh-artifact 执行失败。失败 job：upload-artifact。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "permission",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：upload-artifact。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：Error: Resource not accessible by integration\nHttpError: 403 Forbidden\nResource not accessible by integration。",
+            "已分类失败类型为 permission，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "Error: Resource not accessible by integration\nHttpError: 403 Forbidden\nResource not accessible by integration",
+          "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+          "possible_causes": [
+            "workflow 权限不足",
+            "token scope 不足",
+            "脚本访问受限目录"
+          ],
+          "fix_steps": [
+            "检查 workflow permissions 配置",
+            "确认 token/secrets 的 scope",
+            "避免脚本写入受限目录或使用受限 API"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-17",
+        "expected_failure_type": "permission",
+        "predicted_failure_type": "permission",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+        "elapsed_ms": 248629.23,
+        "output": {
+          "failure_summary": "linux-test 执行失败。失败 job：test。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "permission",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：test。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：PermissionError: [Errno 13] Permission denied: '/workspace/.cache/pip'。",
+            "已分类失败类型为 permission，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "PermissionError: [Errno 13] Permission denied: '/workspace/.cache/pip'",
+          "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+          "possible_causes": [
+            "workflow 权限不足",
+            "token scope 不足",
+            "脚本访问受限目录"
+          ],
+          "fix_steps": [
+            "检查 workflow permissions 配置",
+            "确认 token/secrets 的 scope",
+            "避免脚本写入受限目录或使用受限 API"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-18",
+        "expected_failure_type": "permission",
+        "predicted_failure_type": "permission",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+        "elapsed_ms": 255205.41,
+        "output": {
+          "failure_summary": "api-smoke 执行失败。失败 job：smoke。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "permission",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：smoke。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://api.github.com/repos/demo/private'\nThe token lacks repository scope.。",
+            "已分类失败类型为 permission，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "httpx.HTTPStatusError: Client error '403 Forbidden' for url 'https://api.github.com/repos/demo/private'\nThe token lacks repository scope.",
+          "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+          "possible_causes": [
+            "workflow 权限不足",
+            "token scope 不足",
+            "脚本访问受限目录"
+          ],
+          "fix_steps": [
+            "检查 workflow permissions 配置",
+            "确认 token/secrets 的 scope",
+            "避免脚本写入受限目录或使用受限 API"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-19",
+        "expected_failure_type": "permission",
+        "predicted_failure_type": "permission",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+        "elapsed_ms": 254112.52,
+        "output": {
+          "failure_summary": "docker-push 执行失败。失败 job：publish。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "permission",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：publish。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：denied: requested access to the resource is denied\nunauthorized: authentication required。",
+            "已分类失败类型为 permission，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "denied: requested access to the resource is denied\nunauthorized: authentication required",
+          "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+          "possible_causes": [
+            "workflow 权限不足",
+            "token scope 不足",
+            "脚本访问受限目录"
+          ],
+          "fix_steps": [
+            "检查 workflow permissions 配置",
+            "确认 token/secrets 的 scope",
+            "避免脚本写入受限目录或使用受限 API"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-20",
+        "expected_failure_type": "permission",
+        "predicted_failure_type": "permission",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+        "elapsed_ms": 258972.53,
+        "output": {
+          "failure_summary": "merge-check 执行失败。失败 job：merge。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "permission",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：merge。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：remote: error: GH006: Protected branch update failed\nThe required status check is missing permission.。",
+            "已分类失败类型为 permission，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "remote: error: GH006: Protected branch update failed\nThe required status check is missing permission.",
+          "root_cause": "日志显示权限不足或访问被拒绝，优先检查 token、文件权限和 workflow 权限配置。",
+          "possible_causes": [
+            "workflow 权限不足",
+            "token scope 不足",
+            "脚本访问受限目录"
+          ],
+          "fix_steps": [
+            "检查 workflow permissions 配置",
+            "确认 token/secrets 的 scope",
+            "避免脚本写入受限目录或使用受限 API"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-21",
+        "expected_failure_type": "environment",
+        "predicted_failure_type": "environment",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+        "elapsed_ms": 249756.54,
+        "output": {
+          "failure_summary": "pytest-api 执行失败。失败 job：test。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "environment",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：test。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：RuntimeError: DATABASE_URL environment variable is not set\npytest exited with code 1。",
+            "已分类失败类型为 environment，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "RuntimeError: DATABASE_URL environment variable is not set\npytest exited with code 1",
+          "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+          "possible_causes": [
+            "环境变量缺失",
+            "secret 未配置",
+            "CI 与本地默认配置不一致"
+          ],
+          "fix_steps": [
+            "补齐 workflow env 或 repository secrets",
+            "为本地和 CI 提供一致默认配置",
+            "在日志中避免泄露 secret 明文"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-22",
+        "expected_failure_type": "environment",
+        "predicted_failure_type": "environment",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+        "elapsed_ms": 253236.59,
+        "output": {
+          "failure_summary": "agent-test 执行失败。失败 job：test。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "environment",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：test。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：KeyError: 'OPENAI_API_KEY'\nMissing env var in workflow env block.。",
+            "已分类失败类型为 environment，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "KeyError: 'OPENAI_API_KEY'\nMissing env var in workflow env block.",
+          "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+          "possible_causes": [
+            "环境变量缺失",
+            "secret 未配置",
+            "CI 与本地默认配置不一致"
+          ],
+          "fix_steps": [
+            "补齐 workflow env 或 repository secrets",
+            "为本地和 CI 提供一致默认配置",
+            "在日志中避免泄露 secret 明文"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-23",
+        "expected_failure_type": "environment",
+        "predicted_failure_type": "environment",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+        "elapsed_ms": 261020.28,
+        "output": {
+          "failure_summary": "deploy 执行失败。失败 job：deploy。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "environment",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：deploy。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：Error: required secret DOCKER_PASSWORD is not set in repository secrets.。",
+            "已分类失败类型为 environment，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "Error: required secret DOCKER_PASSWORD is not set in repository secrets.",
+          "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+          "possible_causes": [
+            "环境变量缺失",
+            "secret 未配置",
+            "CI 与本地默认配置不一致"
+          ],
+          "fix_steps": [
+            "补齐 workflow env 或 repository secrets",
+            "为本地和 CI 提供一致默认配置",
+            "在日志中避免泄露 secret 明文"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-24",
+        "expected_failure_type": "environment",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：redis.exceptions.ConnectionError: Error 111 connecting to redis:6379\nREDIS_URL was rendered empty.",
+        "elapsed_ms": 257736.97,
+        "output": {
+          "failure_summary": "integration-test 执行失败。失败 job：test。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：test。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：redis.exceptions.ConnectionError: Error 111 connecting to redis:6379\nREDIS_URL was rendered empty.。",
+            "已分类失败类型为 unknown，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "redis.exceptions.ConnectionError: Error 111 connecting to redis:6379\nREDIS_URL was rendered empty.",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：redis.exceptions.ConnectionError: Error 111 connecting to redis:6379\nREDIS_URL was rendered empty.",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-25",
+        "expected_failure_type": "environment",
+        "predicted_failure_type": "environment",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+        "elapsed_ms": 260544.97,
+        "output": {
+          "failure_summary": "web-test 执行失败。失败 job：test。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "environment",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：test。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：ReferenceError: process.env.NODE_ENV is undefined\nNODE_ENV environment variable was not provided.。",
+            "已分类失败类型为 environment，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "ReferenceError: process.env.NODE_ENV is undefined\nNODE_ENV environment variable was not provided.",
+          "root_cause": "日志显示环境变量或 secret 缺失，优先检查 workflow env 配置和仓库 secrets。",
+          "possible_causes": [
+            "环境变量缺失",
+            "secret 未配置",
+            "CI 与本地默认配置不一致"
+          ],
+          "fix_steps": [
+            "补齐 workflow env 或 repository secrets",
+            "为本地和 CI 提供一致默认配置",
+            "在日志中避免泄露 secret 明文"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      },
+      {
+        "id": "ci-26",
+        "expected_failure_type": "lint",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：/app/components/chat.tsx\n12:7  error  'unused' is assigned a value but never used  no-unused-vars",
+        "elapsed_ms": 263474.85,
+        "output": {
+          "failure_summary": "web-lint 执行失败。失败 job：lint。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：lint。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：/app/components/chat.tsx\n12:7  error  'unused' is assigned a value but never used  no-unused-vars。",
+            "已分类失败类型为 unknown，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "/app/components/chat.tsx\n12:7  error  'unused' is assigned a value but never used  no-unused-vars",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：/app/components/chat.tsx\n12:7  error  'unused' is assigned a value but never used  no-unused-vars",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "/app/components/chat.ts"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-27",
+        "expected_failure_type": "lint",
+        "predicted_failure_type": "lint",
+        "failure_type_correct": true,
+        "root_cause_hit": true,
+        "root_cause": "Lint 检查失败，优先怀疑 backend/app/api/routes/rag.py 第3行导入了 typing.Any 但未使用，触发 F401 规则；日志显示仅此一处错误，根因较明确。",
+        "elapsed_ms": 272180.51,
+        "output": {
+          "failure_summary": "python-lint 执行失败。失败 job：lint。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "lint",
+          "plan": [
+            "解析 workflow run 和 job/step 状态确定失败范围",
+            "读取日志中的错误信息",
+            "定位首个关键错误来源（文件、行号、规则）",
+            "判断根因并输出修复建议"
+          ],
+          "executed_steps": [
+            "检查 workflow_run.conclusion = failure，job lint 失败，step Run checks 失败",
+            "读取 logs_text，发现 F401 'typing.Any' imported but unused 位于 backend/app/api/routes/rag.py:3:1",
+            "确认仅有 1 个错误，无其他错误干扰",
+            "判定为 Python lint 未使用导入错误"
+          ],
+          "first_error": "backend/app/api/routes/rag.py:3:1: F401 'typing.Any' imported but unused",
+          "root_cause": "Lint 检查失败，优先怀疑 backend/app/api/routes/rag.py 第3行导入了 typing.Any 但未使用，触发 F401 规则；日志显示仅此一处错误，根因较明确。",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "打开 backend/app/api/routes/rag.py，删除第3行未使用的 typing.Any 导入",
+            "如果 typing.Any 后续会使用，可暂保留但需先添加使用或调整 lint 配置，但当前建议删除",
+            "本地运行 lint 命令（如 flake8/ruff）确认不再报错",
+            "提交修复并推送到分支"
+          ],
+          "debug_steps": [
+            "如果删除后仍有 F401，检查是否有其他未使用导入",
+            "如果本地 lint 通过但 CI 仍失败，对比 CI 使用的 lint 版本和配置",
+            "查看 workflow 定义确认 lint 具体命令和安装依赖"
+          ],
+          "related_files": [
+            "backend/app/api/routes/rag.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.95
+        },
+        "error": null
+      },
+      {
+        "id": "ci-28",
+        "expected_failure_type": "lint",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：[warn] components/chat.tsx\n[warn] Code style issues found in the above file. Run Prettier to fix.",
+        "elapsed_ms": 279144.61,
+        "output": {
+          "failure_summary": "web-format 执行失败。失败 job：format。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：format。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：[warn] components/chat.tsx\n[warn] Code style issues found in the above file. Run Prettier to fix.。",
+            "已分类失败类型为 unknown，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "[warn] components/chat.tsx\n[warn] Code style issues found in the above file. Run Prettier to fix.",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：[warn] components/chat.tsx\n[warn] Code style issues found in the above file. Run Prettier to fix.",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "components/chat.ts"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-29",
+        "expected_failure_type": "lint",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：backend/app/services/rag/qa.py:42: error: Item \"None\" of \"Document | None\" has no attribute \"content\"  [union-attr]",
+        "elapsed_ms": 283857.21,
+        "output": {
+          "failure_summary": "python-typecheck 执行失败。失败 job：typecheck。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：typecheck。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：backend/app/services/rag/qa.py:42: error: Item \"None\" of \"Document | None\" has no attribute \"content\"  [union-attr]。",
+            "已分类失败类型为 unknown，关联文件 1 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "backend/app/services/rag/qa.py:42: error: Item \"None\" of \"Document | None\" has no attribute \"content\"  [union-attr]",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：backend/app/services/rag/qa.py:42: error: Item \"None\" of \"Document | None\" has no attribute \"content\"  [union-attr]",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [
+            "backend/app/services/rag/qa.py"
+          ],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.78
+        },
+        "error": null
+      },
+      {
+        "id": "ci-30",
+        "expected_failure_type": "lint",
+        "predicted_failure_type": "unknown",
+        "failure_type_correct": false,
+        "root_cause_hit": true,
+        "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：internal/server/handler.go:88:2: ineffectual assignment to err (ineffassign)",
+        "elapsed_ms": 280776.4,
+        "output": {
+          "failure_summary": "go-lint 执行失败。失败 job：lint。失败 step：Run checks。需要结合日志定位首个错误块。",
+          "failure_type": "unknown",
+          "plan": [
+            "找出失败 job 和失败 step。",
+            "提取首个关键错误块。",
+            "判断失败类型：依赖、测试、构建、权限、环境变量或未知。",
+            "搜索相关代码、测试文件和 workflow 配置。",
+            "关联最近 PR 或变更模块。",
+            "输出根因、修复步骤和是否阻塞合并。"
+          ],
+          "executed_steps": [
+            "已识别失败 job 1 个：lint。",
+            "已识别失败 step 1 个：Run checks。",
+            "已提取首个关键错误块：internal/server/handler.go:88:2: ineffectual assignment to err (ineffassign)。",
+            "已分类失败类型为 unknown，关联文件 0 个。",
+            "已结合最近 PR 信号 0 条和代码/配置线索 0 条。",
+            "已生成根因、修复步骤和阻塞判断。"
+          ],
+          "first_error": "internal/server/handler.go:88:2: ineffectual assignment to err (ineffassign)",
+          "root_cause": "日志缺少足够明确的分类信号，首个错误块是当前最可靠的排查入口：internal/server/handler.go:88:2: ineffectual assignment to err (ineffassign)",
+          "possible_causes": [
+            "首个错误块信息不足",
+            "上游命令吞掉了真实错误",
+            "需要查看完整 job 日志"
+          ],
+          "fix_steps": [
+            "展开完整 job 日志",
+            "找到最早失败命令的 stderr",
+            "必要时在 workflow 中增加诊断输出后重跑"
+          ],
+          "debug_steps": [
+            "查看失败 job 的首个错误块",
+            "本地复现对应命令",
+            "检查最近 PR 修改的相关文件",
+            "修复后重新运行失败 job 和完整 workflow"
+          ],
+          "related_files": [],
+          "is_merge_blocking": true,
+          "blocking_reason": "当前 workflow run 结论为 failure，属于合并前需要恢复的质量门禁。",
+          "confidence": 0.7
+        },
+        "error": null
+      }
+    ]
+  }
+}

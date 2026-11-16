@@ -1,0 +1,1080 @@
+{
+  "experiment": "exp01_multi_agent",
+  "model": "deepseek-v4-pro",
+  "bundle_count": 10,
+  "elapsed_seconds": 823.5,
+  "dataset_note": "10 synthetic issue/PR/CI bundles from exp02 benchmark; A=monolithic single LLM call, B/C share Planner+Observer+Synthesis and specialized agents, only max_parallel_tasks differs.",
+  "summary": [
+    {
+      "mode": "A_single",
+      "n": 10,
+      "avg_latency_ms": 12948.266,
+      "std_latency_ms": 10965.2577,
+      "avg_tokens": 1500.6,
+      "avg_calls": 1.2,
+      "completion_rate": 0.9,
+      "full_success_rate": 0.7,
+      "errors": 0
+    },
+    {
+      "mode": "B_serial",
+      "n": 10,
+      "avg_latency_ms": 153390.263,
+      "std_latency_ms": 15696.0031,
+      "avg_tokens": 22239.2,
+      "avg_calls": 6.0,
+      "completion_rate": 0.9333,
+      "full_success_rate": 0.8,
+      "errors": 0
+    },
+    {
+      "mode": "C_parallel",
+      "n": 10,
+      "avg_latency_ms": 60375.824,
+      "std_latency_ms": 7981.8672,
+      "avg_tokens": 21105.6,
+      "avg_calls": 6.0,
+      "completion_rate": 0.8667,
+      "full_success_rate": 0.7,
+      "errors": 0
+    }
+  ],
+  "speedups": {
+    "B_over_A_latency": 0.084,
+    "C_over_B_speedup": 2.541,
+    "C_over_A_latency": 0.214,
+    "C_vs_B_token_delta": -1133.6000000000022
+  },
+  "rows": [
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-01",
+      "elapsed_ms": 6562.65,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 562,
+        "completion_tokens": 638,
+        "total_tokens": 1200,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Bug",
+        "pr_has_bug": true,
+        "pr_bug_reason": "存在 SQL 注入漏洞：用户名直接拼接进 SQL 查询未参数化",
+        "ci_root_cause": "token 过期后后端抛出 KeyError: 'sub' 未捕获，导致返回 500 而非预期的 401"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-01",
+      "elapsed_ms": 139302.71,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7175,
+        "completion_tokens": 14342,
+        "total_tokens": 21517,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 139299,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-01",
+      "elapsed_ms": 53928.41,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7154,
+        "completion_tokens": 12593,
+        "total_tokens": 19747,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 53927,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-02",
+      "elapsed_ms": 44340.14,
+      "usage": {
+        "calls": 3,
+        "prompt_tokens": 1806,
+        "completion_tokens": 2151,
+        "total_tokens": 3957,
+        "errors": 1
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "output": {
+        "issue_category": "Bug",
+        "pr_has_bug": true,
+        "pr_bug_reason": "新增导出接口未指定 UTF-8 with BOM 编码，导致中文被替换为问号，未解决 issue 中的乱码问题。",
+        "ci_root_cause": "测试期望导出 CSV 包含中文字符的 UTF-8 字节序列 b'\\xe4\\xb8\\xad'，但实际导出内容中未找到该字节序列，原因可能是导出时使用了错误编码导致中文变为问号。"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-02",
+      "elapsed_ms": 172145.67,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 8274,
+        "completion_tokens": 17568,
+        "total_tokens": 25842,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 172144,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-02",
+      "elapsed_ms": 57524.63,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7516,
+        "completion_tokens": 15904,
+        "total_tokens": 23420,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 57523,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-03",
+      "elapsed_ms": 7977.9,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 542,
+        "completion_tokens": 569,
+        "total_tokens": 1111,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Bug",
+        "pr_has_bug": true,
+        "pr_bug_reason": "PR hardcodes a Stripe live secret key in backend/app/core/config.py, exposing sensitive credentials in source code.",
+        "ci_root_cause": "Concurrent order creation test failed because inventory was decremented below zero (assert -1 >= 0), indicating no concurrency control for stock deduction."
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-03",
+      "elapsed_ms": 176131.8,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7825,
+        "completion_tokens": 17809,
+        "total_tokens": 25634,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 176130,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-03",
+      "elapsed_ms": 50579.65,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 6935,
+        "completion_tokens": 12244,
+        "total_tokens": 19179,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 50578,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-04",
+      "elapsed_ms": 8298.59,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 534,
+        "completion_tokens": 674,
+        "total_tokens": 1208,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": false,
+        "ci_correct": true,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "output": {
+        "issue_category": "Bug",
+        "pr_has_bug": false,
+        "pr_bug_reason": "The provided patch is minimal and only returns the user's name from profile; no clear defect is evident.",
+        "ci_root_cause": "Test test_retrieval_parent_expansion failed because retrieval returned an empty list instead of ['chunk-2'], indicating parent expansion did not retrieve expected chunks."
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-04",
+      "elapsed_ms": 131076.87,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7076,
+        "completion_tokens": 12745,
+        "total_tokens": 19821,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 131075,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-04",
+      "elapsed_ms": 60378.81,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7078,
+        "completion_tokens": 13679,
+        "total_tokens": 20757,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": false,
+        "ci_correct": false,
+        "correct_subtasks": 1,
+        "completion_rate": 0.3333,
+        "full_success": false
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 60378,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-05",
+      "elapsed_ms": 4502.58,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 531,
+        "completion_tokens": 267,
+        "total_tokens": 798,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Bug",
+        "pr_has_bug": true,
+        "pr_bug_reason": "Loop iterates only up to len(items)-2, skipping the last item, so batch processing does not process all items.",
+        "ci_root_cause": "Test test_chunk_size_limit failed because chunk content exceeded max_chars assertion."
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-05",
+      "elapsed_ms": 130851.8,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 6893,
+        "completion_tokens": 11332,
+        "total_tokens": 18225,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 130850,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-05",
+      "elapsed_ms": 69020.94,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 6913,
+        "completion_tokens": 12395,
+        "total_tokens": 19308,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 69020,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 2
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-06",
+      "elapsed_ms": 10611.45,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 556,
+        "completion_tokens": 776,
+        "total_tokens": 1332,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Feature",
+        "pr_has_bug": true,
+        "pr_bug_reason": "库存扣减代码将数据库对象的 count 属性赋值给局部变量后递减，未更新实际数据库字段，且未处理库存不足情况，存在逻辑缺陷。",
+        "ci_root_cause": "前端构建类型错误：app/chat/page.tsx:42:18 传入 string 类型参数给期望 number 类型的函数，导致 TypeScript 编译失败。"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-06",
+      "elapsed_ms": 160539.15,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7812,
+        "completion_tokens": 15166,
+        "total_tokens": 22978,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 160538,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-06",
+      "elapsed_ms": 77902.43,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7429,
+        "completion_tokens": 15616,
+        "total_tokens": 23045,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 77901,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-07",
+      "elapsed_ms": 14949.67,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 532,
+        "completion_tokens": 1021,
+        "total_tokens": 1553,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Feature",
+        "pr_has_bug": true,
+        "pr_bug_reason": "直接拼接文件名到路径且未校验，存在路径遍历风险，可能下载任意文件",
+        "ci_root_cause": "TypeScript 编译报错：找不到模块 '@/lib/rag'，可能是路径别名未配置或文件缺失"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-07",
+      "elapsed_ms": 160066.16,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7343,
+        "completion_tokens": 14497,
+        "total_tokens": 21840,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 160065,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 4
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-07",
+      "elapsed_ms": 54277.71,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7002,
+        "completion_tokens": 11887,
+        "total_tokens": 18889,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 54277,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-08",
+      "elapsed_ms": 9737.19,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 542,
+        "completion_tokens": 654,
+        "total_tokens": 1196,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Feature",
+        "pr_has_bug": true,
+        "pr_bug_reason": "代码中查询User可能返回None，直接访问owner.name会引发AttributeError；且该PR仅实现报告列表，未包含PDF导出功能，与issue要求不符。",
+        "ci_root_cause": "webpack解析模块失败，缺少适当的loader，无法处理代码中的新语法或文件类型。"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-08",
+      "elapsed_ms": 159698.95,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7392,
+        "completion_tokens": 14475,
+        "total_tokens": 21867,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 159698,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-08",
+      "elapsed_ms": 64383.57,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7373,
+        "completion_tokens": 16394,
+        "total_tokens": 23767,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 64383,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-09",
+      "elapsed_ms": 15310.32,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 536,
+        "completion_tokens": 1094,
+        "total_tokens": 1630,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "output": {
+        "issue_category": "Feature",
+        "pr_has_bug": true,
+        "pr_bug_reason": "未检查 HTTP 响应状态，直接解析 JSON 并访问嵌套键，存在异常风险",
+        "ci_root_cause": "Rust 编译错误：src/main.rs:18 类型不匹配，期望 String 实际为 &str"
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-09",
+      "elapsed_ms": 140835.86,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7319,
+        "completion_tokens": 13289,
+        "total_tokens": 20608,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 140834,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-09",
+      "elapsed_ms": 62561.95,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7593,
+        "completion_tokens": 16616,
+        "total_tokens": 24209,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": false,
+        "correct_subtasks": 2,
+        "completion_rate": 0.6667,
+        "full_success": false
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 62561,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 4
+      },
+      "error": null
+    },
+    {
+      "mode": "A_single",
+      "bundle_id": "bundle-10",
+      "elapsed_ms": 7192.17,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 518,
+        "completion_tokens": 503,
+        "total_tokens": 1021,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "output": {
+        "issue_category": "Feature",
+        "pr_has_bug": true,
+        "pr_bug_reason": "Adding a NOT NULL column 'email' to existing 'users' table without a default value may fail if the table contains existing rows, as existing rows would violate the NOT NULL constraint.",
+        "ci_root_cause": "CI build failed due to a compilation error in /src/Order.java at line 22: cannot find symbol, indicating a missing import, typo, or unresolved reference in the Java code."
+      },
+      "error": null
+    },
+    {
+      "mode": "B_serial",
+      "bundle_id": "bundle-10",
+      "elapsed_ms": 163253.66,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7914,
+        "completion_tokens": 16146,
+        "total_tokens": 24060,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 163253,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 3
+      },
+      "error": null
+    },
+    {
+      "mode": "C_parallel",
+      "bundle_id": "bundle-10",
+      "elapsed_ms": 53200.14,
+      "usage": {
+        "calls": 6,
+        "prompt_tokens": 7303,
+        "completion_tokens": 11432,
+        "total_tokens": 18735,
+        "errors": 0
+      },
+      "evaluation": {
+        "issue_correct": true,
+        "pr_correct": true,
+        "ci_correct": true,
+        "correct_subtasks": 3,
+        "completion_rate": 1.0,
+        "full_success": true
+      },
+      "planner_task_count": 3,
+      "task_statuses": [
+        "success",
+        "success",
+        "success"
+      ],
+      "workflow_metrics": {
+        "duration_ms": 53199,
+        "task_count": 3,
+        "plan_task_count": 3,
+        "execution_rounds": 1,
+        "replan_count": 0,
+        "success_count": 3,
+        "error_count": 0,
+        "skipped_count": 0,
+        "observer_findings": 4
+      },
+      "error": null
+    }
+  ]
+}

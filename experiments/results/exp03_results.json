@@ -1,0 +1,1970 @@
+{
+  "experiment": "exp03_rag_ablation",
+  "corpus_files": [
+    "README.md",
+    "backend/app/skills/ci-debug/SKILL.md",
+    "backend/app/skills/issue-triage/SKILL.md",
+    "backend/app/skills/pr-review/SKILL.md",
+    "backend/app/skills/pr-review/references/risk-checklist.md",
+    "backend/app/skills/project-investigation/SKILL.md",
+    "backend/app/skills/safety-draft/SKILL.md",
+    "backend/app/skills/weekly-report/SKILL.md",
+    "docs/api/openapi.md",
+    "docs/architecture/agent_workflow.md",
+    "docs/architecture/database_schema.md",
+    "docs/architecture/security.md",
+    "docs/architecture/system_design.md",
+    "docs/examples/rag_employee_handbook.md"
+  ],
+  "chunk_count": 70,
+  "query_count": 22,
+  "embedding_model": "BAAI/bge-m3",
+  "reranker": "bge-reranker-base",
+  "notes": "Vector branch uses BGE-M3 instead of project-default Qwen3-Embedding because no DashScope key/local Qwen embedding is available. Rerank uses BGE-reranker-base instead of qwen3-rerank API. Fusion, dedupe, parent limit and answer gate are the project's real code.",
+  "metrics": {
+    "A_vector": {
+      "recall_at_5": 0.9848,
+      "mrr_at_5": 0.8598,
+      "ndcg_at_5": 0.8844
+    },
+    "B_union": {
+      "recall_at_5": 0.9848,
+      "mrr_at_5": 0.8636,
+      "ndcg_at_5": 0.8873
+    },
+    "C_fusion": {
+      "recall_at_5": 0.9848,
+      "mrr_at_5": 0.9242,
+      "ndcg_at_5": 0.9331
+    },
+    "D_full": {
+      "recall_at_5": 0.8939,
+      "mrr_at_5": 0.8523,
+      "ndcg_at_5": 0.8558
+    }
+  },
+  "gate_pass_rate": 1.0,
+  "elapsed_seconds": 218.06,
+  "per_query": {
+    "q01": {
+      "query": "后端默认监听哪个端口？",
+      "relevant": [
+        "8104607af6807be508851c36"
+      ],
+      "groups": {
+        "A_vector": [
+          "1e912dafcbe1d3aafc4d1368",
+          "4549fa168964dfabb822eec3",
+          "b5dbe5e80cc678270c17eefa",
+          "8104607af6807be508851c36",
+          "15eca444e589087618eb5151"
+        ],
+        "B_union": [
+          "1e912dafcbe1d3aafc4d1368",
+          "8104607af6807be508851c36",
+          "4549fa168964dfabb822eec3",
+          "1efda3a3184e87d49b8a6175",
+          "b5dbe5e80cc678270c17eefa"
+        ],
+        "C_fusion": [
+          "8104607af6807be508851c36",
+          "1e912dafcbe1d3aafc4d1368",
+          "1efda3a3184e87d49b8a6175",
+          "4549fa168964dfabb822eec3",
+          "b5dbe5e80cc678270c17eefa"
+        ],
+        "D_full": [
+          "fb596e030d8425938d6379b6",
+          "5fb4ab2162321ecf4c86b311",
+          "0aa8687c9af3e0672108d7f5",
+          "15eca444e589087618eb5151",
+          "1fce45996960087670fc0755"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": -0.7063,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "9f75d98964e22375736030b9",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q02": {
+      "query": "前端本地开发默认地址是什么？",
+      "relevant": [
+        "8104607af6807be508851c36"
+      ],
+      "groups": {
+        "A_vector": [
+          "8104607af6807be508851c36",
+          "4549fa168964dfabb822eec3",
+          "1e912dafcbe1d3aafc4d1368",
+          "1efda3a3184e87d49b8a6175",
+          "b5dbe5e80cc678270c17eefa"
+        ],
+        "B_union": [
+          "8104607af6807be508851c36",
+          "4549fa168964dfabb822eec3",
+          "1efda3a3184e87d49b8a6175",
+          "1e912dafcbe1d3aafc4d1368",
+          "6381ad961b41fefd74553c3e"
+        ],
+        "C_fusion": [
+          "8104607af6807be508851c36",
+          "1efda3a3184e87d49b8a6175",
+          "1e912dafcbe1d3aafc4d1368",
+          "4549fa168964dfabb822eec3",
+          "15eca444e589087618eb5151"
+        ],
+        "D_full": [
+          "8104607af6807be508851c36",
+          "4549fa168964dfabb822eec3",
+          "15eca444e589087618eb5151",
+          "1efda3a3184e87d49b8a6175",
+          "5286581c828075f504b19704"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": -2.105,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "ce1a8529-3fc1-5d85-95da-73d02e7d5561",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a493a3ca-0836-5ed7-b5a3-85750e484553",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q03": {
+      "query": "RAG 默认使用哪个 embedding 模型？",
+      "relevant": [
+        "1efda3a3184e87d49b8a6175"
+      ],
+      "groups": {
+        "A_vector": [
+          "1efda3a3184e87d49b8a6175",
+          "cab2c5e3d522e7fa4b6689c6",
+          "2e5956c54973c65562a5b815",
+          "0b8a624c689b04dd3177d03a",
+          "7d7ba5a87a154fa274d04ebe"
+        ],
+        "B_union": [
+          "1efda3a3184e87d49b8a6175",
+          "cab2c5e3d522e7fa4b6689c6",
+          "141425b4d8d8cc9641d998e2",
+          "2e5956c54973c65562a5b815",
+          "7d7ba5a87a154fa274d04ebe"
+        ],
+        "C_fusion": [
+          "1efda3a3184e87d49b8a6175",
+          "cab2c5e3d522e7fa4b6689c6",
+          "7d7ba5a87a154fa274d04ebe",
+          "129fc15c0d94eaca1d6434e3",
+          "2e5956c54973c65562a5b815"
+        ],
+        "D_full": [
+          "1efda3a3184e87d49b8a6175",
+          "cab2c5e3d522e7fa4b6689c6",
+          "0cfea57693ccdbe52fefbc5b",
+          "bd4c3aa88fcfe199f56ff156",
+          "12054a34d5f620b42dc4b468"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 4.501,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        }
+      ]
+    },
+    "q04": {
+      "query": "默认的 rerank 模型是什么？",
+      "relevant": [
+        "1efda3a3184e87d49b8a6175"
+      ],
+      "groups": {
+        "A_vector": [
+          "1efda3a3184e87d49b8a6175",
+          "0b8a624c689b04dd3177d03a",
+          "848d030f68faa7a8d4ffc048",
+          "2e5956c54973c65562a5b815",
+          "a00a5c7096a6590a181f7ddf"
+        ],
+        "B_union": [
+          "1efda3a3184e87d49b8a6175",
+          "0b8a624c689b04dd3177d03a",
+          "141425b4d8d8cc9641d998e2",
+          "848d030f68faa7a8d4ffc048",
+          "b45c9d0f975b5c37c7528bd9"
+        ],
+        "C_fusion": [
+          "1efda3a3184e87d49b8a6175",
+          "1e912dafcbe1d3aafc4d1368",
+          "2e5956c54973c65562a5b815",
+          "7d7ba5a87a154fa274d04ebe",
+          "a00a5c7096a6590a181f7ddf"
+        ],
+        "D_full": [
+          "1efda3a3184e87d49b8a6175",
+          "7d7ba5a87a154fa274d04ebe",
+          "2e5956c54973c65562a5b815",
+          "12054a34d5f620b42dc4b468",
+          "0cfea57693ccdbe52fefbc5b"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.2924,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q05": {
+      "query": "知识库支持哪些文件格式？",
+      "relevant": [
+        "cab2c5e3d522e7fa4b6689c6"
+      ],
+      "groups": {
+        "A_vector": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "848d030f68faa7a8d4ffc048",
+          "cfceb7306e6ccf920bf56f5a",
+          "129fc15c0d94eaca1d6434e3",
+          "4693a7dcd70f125506497083"
+        ],
+        "B_union": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "848d030f68faa7a8d4ffc048",
+          "129fc15c0d94eaca1d6434e3",
+          "cfceb7306e6ccf920bf56f5a",
+          "6381ad961b41fefd74553c3e"
+        ],
+        "C_fusion": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "129fc15c0d94eaca1d6434e3",
+          "848d030f68faa7a8d4ffc048",
+          "0b8a624c689b04dd3177d03a",
+          "1efda3a3184e87d49b8a6175"
+        ],
+        "D_full": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "1fce45996960087670fc0755",
+          "a0474b96ea7f017983c35fc5",
+          "2e5956c54973c65562a5b815",
+          "129fc15c0d94eaca1d6434e3"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.2882,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "3e7b150471029af0a0aba551",
+          "parent_id": "91be0452bc059e4497126d18"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c39ce0f1-3bb6-5e70-97e8-b067f09048e5",
+          "parent_id": "023d1c53a996610a53411552"
+        }
+      ]
+    },
+    "q06": {
+      "query": "重建 RAG 索引调用哪个接口？",
+      "relevant": [
+        "343d8bd035d53a3ecd8ce9d6",
+        "848d030f68faa7a8d4ffc048",
+        "a00a5c7096a6590a181f7ddf"
+      ],
+      "groups": {
+        "A_vector": [
+          "a00a5c7096a6590a181f7ddf",
+          "848d030f68faa7a8d4ffc048",
+          "129fc15c0d94eaca1d6434e3",
+          "cab2c5e3d522e7fa4b6689c6",
+          "1efda3a3184e87d49b8a6175"
+        ],
+        "B_union": [
+          "a00a5c7096a6590a181f7ddf",
+          "848d030f68faa7a8d4ffc048",
+          "129fc15c0d94eaca1d6434e3",
+          "cab2c5e3d522e7fa4b6689c6",
+          "1efda3a3184e87d49b8a6175"
+        ],
+        "C_fusion": [
+          "a00a5c7096a6590a181f7ddf",
+          "848d030f68faa7a8d4ffc048",
+          "129fc15c0d94eaca1d6434e3",
+          "cab2c5e3d522e7fa4b6689c6",
+          "2fbfbafde450d07442939df5"
+        ],
+        "D_full": [
+          "a00a5c7096a6590a181f7ddf",
+          "848d030f68faa7a8d4ffc048",
+          "bd4c3aa88fcfe199f56ff156",
+          "2fbfbafde450d07442939df5",
+          "9f75d98964e22375736030b9"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.8376,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        }
+      ]
+    },
+    "q07": {
+      "query": "RAGAS 评测包含哪五项核心指标？",
+      "relevant": [
+        "1f521c6c70708fb0a1aa0067"
+      ],
+      "groups": {
+        "A_vector": [
+          "93bdb74d05048c18db2534c0",
+          "2e5956c54973c65562a5b815",
+          "1f521c6c70708fb0a1aa0067",
+          "0b8a624c689b04dd3177d03a",
+          "2fbfbafde450d07442939df5"
+        ],
+        "B_union": [
+          "93bdb74d05048c18db2534c0",
+          "2e5956c54973c65562a5b815",
+          "0cfea57693ccdbe52fefbc5b",
+          "1f521c6c70708fb0a1aa0067",
+          "c20e02579ad36efa73ac0dc8"
+        ],
+        "C_fusion": [
+          "93bdb74d05048c18db2534c0",
+          "2e5956c54973c65562a5b815",
+          "1f521c6c70708fb0a1aa0067",
+          "c20e02579ad36efa73ac0dc8",
+          "0b8a624c689b04dd3177d03a"
+        ],
+        "D_full": [
+          "93bdb74d05048c18db2534c0",
+          "2e5956c54973c65562a5b815",
+          "bd4c3aa88fcfe199f56ff156",
+          "12054a34d5f620b42dc4b468",
+          "0cfea57693ccdbe52fefbc5b"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 3.9199,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        }
+      ]
+    },
+    "q08": {
+      "query": "Agent 在对话中搜索知识库使用哪个工具？",
+      "relevant": [
+        "cab2c5e3d522e7fa4b6689c6"
+      ],
+      "groups": {
+        "A_vector": [
+          "9f75d98964e22375736030b9",
+          "cab2c5e3d522e7fa4b6689c6",
+          "1f521c6c70708fb0a1aa0067",
+          "2fbfbafde450d07442939df5",
+          "848d030f68faa7a8d4ffc048"
+        ],
+        "B_union": [
+          "9f75d98964e22375736030b9",
+          "cab2c5e3d522e7fa4b6689c6",
+          "1f521c6c70708fb0a1aa0067",
+          "2fbfbafde450d07442939df5",
+          "848d030f68faa7a8d4ffc048"
+        ],
+        "C_fusion": [
+          "9f75d98964e22375736030b9",
+          "cab2c5e3d522e7fa4b6689c6",
+          "1f521c6c70708fb0a1aa0067",
+          "848d030f68faa7a8d4ffc048",
+          "2e5956c54973c65562a5b815"
+        ],
+        "D_full": [
+          "fa6312e55431763145c95fcc",
+          "9f75d98964e22375736030b9",
+          "bd4c3aa88fcfe199f56ff156",
+          "cab2c5e3d522e7fa4b6689c6",
+          "15eca444e589087618eb5151"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.4172,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        }
+      ]
+    },
+    "q09": {
+      "query": "源码检索优先使用哪个工具？",
+      "relevant": [
+        "848d030f68faa7a8d4ffc048"
+      ],
+      "groups": {
+        "A_vector": [
+          "6ca5f99222f04ad37ebaf6c0",
+          "848d030f68faa7a8d4ffc048",
+          "15eca444e589087618eb5151",
+          "0b8a624c689b04dd3177d03a",
+          "ce7bba051af8b20860c7bd49"
+        ],
+        "B_union": [
+          "6ca5f99222f04ad37ebaf6c0",
+          "848d030f68faa7a8d4ffc048",
+          "9f75d98964e22375736030b9",
+          "15eca444e589087618eb5151",
+          "0b8a624c689b04dd3177d03a"
+        ],
+        "C_fusion": [
+          "848d030f68faa7a8d4ffc048",
+          "6ca5f99222f04ad37ebaf6c0",
+          "9f75d98964e22375736030b9",
+          "bd4c3aa88fcfe199f56ff156",
+          "1f521c6c70708fb0a1aa0067"
+        ],
+        "D_full": [
+          "848d030f68faa7a8d4ffc048",
+          "9f75d98964e22375736030b9",
+          "12054a34d5f620b42dc4b468",
+          "6ca5f99222f04ad37ebaf6c0",
+          "fa6312e55431763145c95fcc"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.6292,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q10": {
+      "query": "RAG 问答接口的路径是什么？",
+      "relevant": [
+        "343d8bd035d53a3ecd8ce9d6"
+      ],
+      "groups": {
+        "A_vector": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "848d030f68faa7a8d4ffc048",
+          "343d8bd035d53a3ecd8ce9d6",
+          "2e5956c54973c65562a5b815",
+          "2fbfbafde450d07442939df5"
+        ],
+        "B_union": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "848d030f68faa7a8d4ffc048",
+          "7d7ba5a87a154fa274d04ebe",
+          "343d8bd035d53a3ecd8ce9d6",
+          "2e5956c54973c65562a5b815"
+        ],
+        "C_fusion": [
+          "cab2c5e3d522e7fa4b6689c6",
+          "343d8bd035d53a3ecd8ce9d6",
+          "848d030f68faa7a8d4ffc048",
+          "7d7ba5a87a154fa274d04ebe",
+          "a00a5c7096a6590a181f7ddf"
+        ],
+        "D_full": [
+          "08efb66d6a1683b809da0913",
+          "343d8bd035d53a3ecd8ce9d6",
+          "2fbfbafde450d07442939df5",
+          "cab2c5e3d522e7fa4b6689c6",
+          "12054a34d5f620b42dc4b468"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": -1.9055,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        }
+      ]
+    },
+    "q11": {
+      "query": "正式员工每年有多少天带薪年假？",
+      "relevant": [
+        "0e04cbc23c4d11ce4697d780"
+      ],
+      "groups": {
+        "A_vector": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "33533e9ebfd27b98b6d8e5dd",
+          "002fec2ed85ec36afdc3d72c"
+        ],
+        "B_union": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "c05fef07e5f514f2dc00efdc",
+          "33533e9ebfd27b98b6d8e5dd"
+        ],
+        "C_fusion": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "33533e9ebfd27b98b6d8e5dd",
+          "c05fef07e5f514f2dc00efdc"
+        ],
+        "D_full": [
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "48d97f73b7f62890a18c47a0",
+          "cfceb7306e6ccf920bf56f5a",
+          "d4ea7aeabe7b14c51be56987"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 5.1265,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "f7a5f5df-0bf8-5585-9a03-cd3dc2268937",
+          "parent_id": "91be0452bc059e4497126d18"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q12": {
+      "query": "年假需要提前多久申请？",
+      "relevant": [
+        "0e04cbc23c4d11ce4697d780"
+      ],
+      "groups": {
+        "A_vector": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "33533e9ebfd27b98b6d8e5dd",
+          "fcee11dc1ab45afe340f9cf6"
+        ],
+        "B_union": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "ba93221dc9578b44ee366144",
+          "33533e9ebfd27b98b6d8e5dd"
+        ],
+        "C_fusion": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "fcee11dc1ab45afe340f9cf6",
+          "33533e9ebfd27b98b6d8e5dd"
+        ],
+        "D_full": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "c782267afc2a8ba1c25ff940",
+          "d4ea7aeabe7b14c51be56987"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 5.2557,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "ce1a8529-3fc1-5d85-95da-73d02e7d5561",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a493a3ca-0836-5ed7-b5a3-85750e484553",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q13": {
+      "query": "连续休假超过几天需要部门负责人二次审批？",
+      "relevant": [
+        "0e04cbc23c4d11ce4697d780"
+      ],
+      "groups": {
+        "A_vector": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "33533e9ebfd27b98b6d8e5dd",
+          "d4ea7aeabe7b14c51be56987"
+        ],
+        "B_union": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "42302de48366cc81305538f5",
+          "33533e9ebfd27b98b6d8e5dd"
+        ],
+        "C_fusion": [
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "48d97f73b7f62890a18c47a0",
+          "33533e9ebfd27b98b6d8e5dd",
+          "becb97a5330ccc8dfdc3eb49"
+        ],
+        "D_full": [
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "33533e9ebfd27b98b6d8e5dd",
+          "48d97f73b7f62890a18c47a0",
+          "becb97a5330ccc8dfdc3eb49"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 3.9086,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q14": {
+      "query": "未使用的年假最晚什么时候用完？",
+      "relevant": [
+        "0e04cbc23c4d11ce4697d780"
+      ],
+      "groups": {
+        "A_vector": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "fcee11dc1ab45afe340f9cf6",
+          "c782267afc2a8ba1c25ff940"
+        ],
+        "B_union": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "141425b4d8d8cc9641d998e2",
+          "0a0c819b6a0cc46473f9f4f2",
+          "6381ad961b41fefd74553c3e"
+        ],
+        "C_fusion": [
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "0a0c819b6a0cc46473f9f4f2",
+          "141425b4d8d8cc9641d998e2",
+          "6381ad961b41fefd74553c3e"
+        ],
+        "D_full": [
+          "0e04cbc23c4d11ce4697d780",
+          "33533e9ebfd27b98b6d8e5dd",
+          "b5dbe5e80cc678270c17eefa",
+          "1db2355169c44d07c95ec41f",
+          "48d97f73b7f62890a18c47a0"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.755,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c44a9390c82e70c22f40055f",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "db09bc43-3e22-5178-b7ea-609c46b86273",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a493a3ca-0836-5ed7-b5a3-85750e484553",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "3740f555-ba94-58a6-8754-6bbe93ddad32",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q15": {
+      "query": "员工每周最多可以申请几天远程办公？",
+      "relevant": [
+        "48d97f73b7f62890a18c47a0"
+      ],
+      "groups": {
+        "A_vector": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "002fec2ed85ec36afdc3d72c",
+          "fcee11dc1ab45afe340f9cf6"
+        ],
+        "B_union": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "fa6312e55431763145c95fcc",
+          "002fec2ed85ec36afdc3d72c"
+        ],
+        "C_fusion": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "002fec2ed85ec36afdc3d72c",
+          "33533e9ebfd27b98b6d8e5dd"
+        ],
+        "D_full": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "af9b29fc4cff13f86efe1c7f",
+          "002fec2ed85ec36afdc3d72c",
+          "12054a34d5f620b42dc4b468"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 8.2294,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "9f75d98964e22375736030b9",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "ce1a8529-3fc1-5d85-95da-73d02e7d5561",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "db09bc43-3e22-5178-b7ea-609c46b86273",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "3740f555-ba94-58a6-8754-6bbe93ddad32",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q16": {
+      "query": "远程办公申请需要在什么时候前提交？",
+      "relevant": [
+        "48d97f73b7f62890a18c47a0"
+      ],
+      "groups": {
+        "A_vector": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "fcee11dc1ab45afe340f9cf6",
+          "002fec2ed85ec36afdc3d72c"
+        ],
+        "B_union": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "b45c9d0f975b5c37c7528bd9",
+          "fcee11dc1ab45afe340f9cf6"
+        ],
+        "C_fusion": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "fcee11dc1ab45afe340f9cf6",
+          "2fbfbafde450d07442939df5"
+        ],
+        "D_full": [
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "0a0c819b6a0cc46473f9f4f2",
+          "d4ea7aeabe7b14c51be56987",
+          "2fbfbafde450d07442939df5"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 7.5533,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "42580a66-267a-5b90-b80f-294c24ff6ef3",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "09c3f2e8-c48f-52c4-b2ca-39b2c4f40a0c",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q17": {
+      "query": "P0 事故要求值班工程师多久响应？",
+      "relevant": [
+        "33533e9ebfd27b98b6d8e5dd"
+      ],
+      "groups": {
+        "A_vector": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "d4ea7aeabe7b14c51be56987",
+          "0e04cbc23c4d11ce4697d780",
+          "c782267afc2a8ba1c25ff940",
+          "0a0c819b6a0cc46473f9f4f2"
+        ],
+        "B_union": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "d4ea7aeabe7b14c51be56987",
+          "fa6312e55431763145c95fcc",
+          "0e04cbc23c4d11ce4697d780",
+          "4e7e6b6b926025e4458dac4e"
+        ],
+        "C_fusion": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "4e7e6b6b926025e4458dac4e",
+          "48d97f73b7f62890a18c47a0",
+          "d4ea7aeabe7b14c51be56987"
+        ],
+        "D_full": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "af9b29fc4cff13f86efe1c7f",
+          "8ae373cd75fbc0c527414bb4",
+          "df89a87ae7a7912a573b7514"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 8.7387,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": [
+          "p0"
+        ]
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "9f75d98964e22375736030b9",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1fce45996960087670fc0755",
+          "parent_id": "91be0452bc059e4497126d18"
+        },
+        {
+          "id": "a493a3ca-0836-5ed7-b5a3-85750e484553",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "be3eaf0b-67db-5ff2-9571-8fec7732696e",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q18": {
+      "query": "事故处理期间多久同步一次进展？",
+      "relevant": [
+        "33533e9ebfd27b98b6d8e5dd"
+      ],
+      "groups": {
+        "A_vector": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "b5dbe5e80cc678270c17eefa",
+          "1e912dafcbe1d3aafc4d1368",
+          "becb97a5330ccc8dfdc3eb49"
+        ],
+        "B_union": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "b5dbe5e80cc678270c17eefa",
+          "002fec2ed85ec36afdc3d72c",
+          "1e912dafcbe1d3aafc4d1368"
+        ],
+        "C_fusion": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "b5dbe5e80cc678270c17eefa",
+          "1e912dafcbe1d3aafc4d1368",
+          "002fec2ed85ec36afdc3d72c"
+        ],
+        "D_full": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "00972493f88873669b1b1a44",
+          "42302de48366cc81305538f5",
+          "c20e02579ad36efa73ac0dc8"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 5.232,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "1e912dafcbe1d3aafc4d1368",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "fa6312e55431763145c95fcc",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "db09bc43-3e22-5178-b7ea-609c46b86273",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "20903e1e-d752-58aa-b4c9-16891bd1b737",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "08e57332-5135-54e6-ab29-325e9a1863d8",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q19": {
+      "query": "服务恢复后多久必须完成复盘文档？",
+      "relevant": [
+        "33533e9ebfd27b98b6d8e5dd"
+      ],
+      "groups": {
+        "A_vector": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "a00a5c7096a6590a181f7ddf",
+          "d4ea7aeabe7b14c51be56987",
+          "848d030f68faa7a8d4ffc048"
+        ],
+        "B_union": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940",
+          "d4ea7aeabe7b14c51be56987",
+          "a00a5c7096a6590a181f7ddf",
+          "ba93221dc9578b44ee366144"
+        ],
+        "C_fusion": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "d4ea7aeabe7b14c51be56987",
+          "c782267afc2a8ba1c25ff940",
+          "002fec2ed85ec36afdc3d72c",
+          "4e7e6b6b926025e4458dac4e"
+        ],
+        "D_full": [
+          "33533e9ebfd27b98b6d8e5dd",
+          "d4ea7aeabe7b14c51be56987",
+          "c782267afc2a8ba1c25ff940",
+          "2fbfbafde450d07442939df5",
+          "c44a9390c82e70c22f40055f"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 4.9328,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "9f75d98964e22375736030b9",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "0b8a624c689b04dd3177d03a",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "2505f5b3-0211-59ff-b86e-a0413cd01c4e",
+          "parent_id": "91be0452bc059e4497126d18"
+        },
+        {
+          "id": "3740f555-ba94-58a6-8754-6bbe93ddad32",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q20": {
+      "query": "5000 元以上的费用需要谁审批？",
+      "relevant": [
+        "0a0c819b6a0cc46473f9f4f2"
+      ],
+      "groups": {
+        "A_vector": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "d4ea7aeabe7b14c51be56987",
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "6381ad961b41fefd74553c3e"
+        ],
+        "B_union": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "d4ea7aeabe7b14c51be56987",
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "03a20f6176f91b9daf35f708"
+        ],
+        "C_fusion": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "d4ea7aeabe7b14c51be56987",
+          "6381ad961b41fefd74553c3e",
+          "ce7bba051af8b20860c7bd49"
+        ],
+        "D_full": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "d4ea7aeabe7b14c51be56987",
+          "ce7bba051af8b20860c7bd49",
+          "48d97f73b7f62890a18c47a0"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 3.8042,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": [
+          "5000"
+        ]
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c782267afc2a8ba1c25ff940",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "cab2c5e3d522e7fa4b6689c6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "8b83623b-bb18-5ae3-9c06-fad21545bb85",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "cd473269-5dae-512f-9c58-931d2bc36634",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        }
+      ]
+    },
+    "q21": {
+      "query": "一线城市差旅住宿标准是多少？",
+      "relevant": [
+        "0a0c819b6a0cc46473f9f4f2"
+      ],
+      "groups": {
+        "A_vector": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "0b8a624c689b04dd3177d03a",
+          "48d97f73b7f62890a18c47a0",
+          "209e103af64ec597e3a1dffd"
+        ],
+        "B_union": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "d4ea7aeabe7b14c51be56987",
+          "0b8a624c689b04dd3177d03a",
+          "2e5956c54973c65562a5b815"
+        ],
+        "C_fusion": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "d4ea7aeabe7b14c51be56987",
+          "0e04cbc23c4d11ce4697d780",
+          "0b8a624c689b04dd3177d03a",
+          "48d97f73b7f62890a18c47a0"
+        ],
+        "D_full": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "d4ea7aeabe7b14c51be56987",
+          "12054a34d5f620b42dc4b468",
+          "cfceb7306e6ccf920bf56f5a",
+          "1db2355169c44d07c95ec41f"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 0.8546,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2fbfbafde450d07442939df5",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "129fc15c0d94eaca1d6434e3",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "c39ce0f1-3bb6-5e70-97e8-b067f09048e5",
+          "parent_id": "023d1c53a996610a53411552"
+        },
+        {
+          "id": "a493a3ca-0836-5ed7-b5a3-85750e484553",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        }
+      ]
+    },
+    "q22": {
+      "query": "发票和付款凭证需要在多久内上传？",
+      "relevant": [
+        "0a0c819b6a0cc46473f9f4f2"
+      ],
+      "groups": {
+        "A_vector": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "48d97f73b7f62890a18c47a0",
+          "0e04cbc23c4d11ce4697d780",
+          "33533e9ebfd27b98b6d8e5dd",
+          "c782267afc2a8ba1c25ff940"
+        ],
+        "B_union": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "48d97f73b7f62890a18c47a0",
+          "fcee11dc1ab45afe340f9cf6",
+          "0e04cbc23c4d11ce4697d780",
+          "129fc15c0d94eaca1d6434e3"
+        ],
+        "C_fusion": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "33533e9ebfd27b98b6d8e5dd",
+          "002fec2ed85ec36afdc3d72c"
+        ],
+        "D_full": [
+          "0a0c819b6a0cc46473f9f4f2",
+          "0e04cbc23c4d11ce4697d780",
+          "48d97f73b7f62890a18c47a0",
+          "33533e9ebfd27b98b6d8e5dd",
+          "ce7bba051af8b20860c7bd49"
+        ]
+      },
+      "gate": {
+        "evidence_count": 5,
+        "top_score": 4.0857,
+        "score_threshold": null,
+        "decision": "answer",
+        "reason": "证据达到分数门槛，关键名称可以在候选中核对",
+        "matched_signals": []
+      },
+      "duplicates_removed": [],
+      "parent_overflow_removed": [
+        {
+          "id": "b5dbe5e80cc678270c17eefa",
+          "parent_id": "273c9270952323950016e62b"
+        },
+        {
+          "id": "848d030f68faa7a8d4ffc048",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1efda3a3184e87d49b8a6175",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "1f521c6c70708fb0a1aa0067",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "c20e02579ad36efa73ac0dc8",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "a00a5c7096a6590a181f7ddf",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "93bdb74d05048c18db2534c0",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "2e5956c54973c65562a5b815",
+          "parent_id": "4e3d981f483ee9340c6b91b7"
+        },
+        {
+          "id": "343d8bd035d53a3ecd8ce9d6",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "7d7ba5a87a154fa274d04ebe",
+          "parent_id": "5ac6c8e33107c5d7c78f7de0"
+        },
+        {
+          "id": "8b83623b-bb18-5ae3-9c06-fad21545bb85",
+          "parent_id": "023d1c53a996610a53411552"
+        }
+      ]
+    }
+  }
+}

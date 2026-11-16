@@ -1,0 +1,1173 @@
+{
+  "experiment": "exp04_context_compression",
+  "model": "deepseek-v4-pro",
+  "elapsed_seconds": 115.19,
+  "usage": {
+    "calls": 48,
+    "prompt_tokens": 108408,
+    "completion_tokens": 9229,
+    "total_tokens": 117637,
+    "errors": 7
+  },
+  "context_tokens": {
+    "A_none": 7055,
+    "B_truncate": 1054,
+    "C_full": 1394
+  },
+  "retention": {
+    "A_none": {
+      "kept": 20,
+      "total": 20,
+      "rate": 1.0,
+      "missing": []
+    },
+    "B_truncate": {
+      "kept": 4,
+      "total": 20,
+      "rate": 0.2,
+      "missing": [
+        "run_command",
+        "refresh_location",
+        "redis_ttl",
+        "todo_test",
+        "error_file",
+        "error_reason",
+        "preference",
+        "branch",
+        "pr",
+        "table",
+        "migration",
+        "ci_job",
+        "ci_error",
+        "convention",
+        "deadline",
+        "owner"
+      ]
+    },
+    "C_full": {
+      "kept": 11,
+      "total": 20,
+      "rate": 0.55,
+      "missing": [
+        "middleware_file",
+        "refresh_location",
+        "redis_ttl",
+        "error_file",
+        "error_reason",
+        "preference",
+        "table",
+        "migration",
+        "convention"
+      ]
+    }
+  },
+  "compression_stats": {
+    "microcompact": {
+      "mode": "microcompact_regenerable_context",
+      "input_messages": 24,
+      "compacted_messages": 6,
+      "tokens_before": 6977,
+      "tokens_after": 2001,
+      "estimated_tokens_saved": 4976,
+      "kept_recent_messages": 6,
+      "compacted_tools": [
+        "workspace.read_file",
+        "rag.search_similar_documents",
+        "workspace.search_code"
+      ]
+    },
+    "history_compression": {
+      "input_messages": 24,
+      "eligible_messages": 17,
+      "kept_messages": 17,
+      "omitted_messages": 0,
+      "truncated_messages": 0,
+      "exact_suffix_messages": 17,
+      "estimated_tokens": 368,
+      "budget_tokens": 550
+    },
+    "summary_mode": "llm",
+    "memory_mode": "fallback_extractive",
+    "preservation": {
+      "required_count": 10,
+      "missing_count": 0,
+      "required": [
+        "测试命令是 pytest backend/app/tests/test_auth.py",
+        "测试命令是 pytest backend/app/tests/test_auth.py -q；本地运行命令是 uvicorn app.main:app --reload。",
+        "还有哪些待办？",
+        "待办：1. 补充过期 token 单测；2. 更新 README 环境变量。",
+        "CI 失败 job 是 pytest-auth，错误是 AssertionError: assert 500 == 401。",
+        "下一步先复现 assert 500 == 401，再补过期 token 单测。",
+        "backend/app/services/auth/middleware.py",
+        "然后运行 pytest backend/app/tests/test_auth.py",
+        "开始修改 middleware.py，然后运行 pytest backend/app/tests/test_auth.py -q。",
+        "最后请总结当前任务：需要修改哪些文件、运行什么命令、有哪些决策和待办？"
+      ],
+      "missing": [],
+      "appended_missing_count": 10
+    },
+    "compression_elapsed_ms": 79732.33
+  },
+  "summary": [
+    {
+      "mode": "A_none",
+      "context_tokens": 7055,
+      "token_saving_vs_A": 0.0,
+      "fact_retention": 1.0,
+      "qa_accuracy": 1.0,
+      "task_completion": 1.0
+    },
+    {
+      "mode": "B_truncate",
+      "context_tokens": 1054,
+      "token_saving_vs_A": 0.8506,
+      "fact_retention": 0.2,
+      "qa_accuracy": 0.3333,
+      "task_completion": 0.0
+    },
+    {
+      "mode": "C_full",
+      "context_tokens": 1394,
+      "token_saving_vs_A": 0.8024,
+      "fact_retention": 0.55,
+      "qa_accuracy": 0.5833,
+      "task_completion": 0.75
+    }
+  ],
+  "answer_consistency_A_vs_C": 0.5833,
+  "scoring": {
+    "A_none": {
+      "accuracy": 1.0,
+      "rows": [
+        {
+          "id": "q1",
+          "hit": true,
+          "answer": "backend/app/services/auth/middleware.py",
+          "error": null
+        },
+        {
+          "id": "q2",
+          "hit": true,
+          "answer": "测试命令：`pytest backend/app/tests/test_auth.py -q`",
+          "error": null
+        },
+        {
+          "id": "q3",
+          "hit": true,
+          "answer": "token 刷新逻辑放在 `backend/app/services/auth/middleware.py` 的 middleware，不放 route。",
+          "error": null
+        },
+        {
+          "id": "q4",
+          "hit": true,
+          "answer": "Redis，TTL 7 天。",
+          "error": null
+        },
+        {
+          "id": "q5",
+          "hit": true,
+          "answer": "1. 补充过期 token 单测  \n2. 更新 README 环境变量",
+          "error": null
+        },
+        {
+          "id": "q6",
+          "hit": true,
+          "answer": "MissingAuthorizationHeader 出现在 `backend/app/api/routes/repos.py:42`。",
+          "error": null
+        },
+        {
+          "id": "q7",
+          "hit": true,
+          "answer": "当前分支：fix/auth-refresh；PR 编号：#128。",
+          "error": null
+        },
+        {
+          "id": "q8",
+          "hit": true,
+          "answer": "新增表：refresh_tokens；迁移文件：backend/migrations/0009_refresh_tokens.sql。",
+          "error": null
+        },
+        {
+          "id": "q9",
+          "hit": true,
+          "answer": "CI 失败 job：pytest-auth  \n错误：AssertionError: assert 500 == 401",
+          "error": null
+        },
+        {
+          "id": "q10",
+          "hit": true,
+          "answer": "用户偏好中文简洁回答。",
+          "error": null
+        },
+        {
+          "id": "q11",
+          "hit": true,
+          "answer": "不要引入新依赖。",
+          "error": null
+        },
+        {
+          "id": "q12",
+          "hit": true,
+          "answer": "负责人：Alice；截止时间：本周五。",
+          "error": null
+        }
+      ],
+      "task_completion": {
+        "categories": {
+          "files": true,
+          "commands": true,
+          "decisions": true,
+          "todos": true
+        },
+        "completed": 4,
+        "rate": 1.0
+      }
+    },
+    "B_truncate": {
+      "accuracy": 0.3333,
+      "rows": [
+        {
+          "id": "q1",
+          "hit": true,
+          "answer": "backend/app/services/auth/middleware.py",
+          "error": null
+        },
+        {
+          "id": "q2",
+          "hit": true,
+          "answer": "pytest backend/app/tests/test_auth.py -q",
+          "error": null
+        },
+        {
+          "id": "q3",
+          "hit": true,
+          "answer": "backend/app/services/auth/middleware.py",
+          "error": null
+        },
+        {
+          "id": "q4",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q5",
+          "hit": false,
+          "answer": "待办事项：更新 README 环境变量说明；修改 `backend/app/services/auth/middleware.py`；运行 `pytest backend/app/tests/test_auth.py -q`。",
+          "error": null
+        },
+        {
+          "id": "q6",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q7",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q8",
+          "hit": false,
+          "answer": "不知道。",
+          "error": null
+        },
+        {
+          "id": "q9",
+          "hit": false,
+          "answer": "不知道。",
+          "error": null
+        },
+        {
+          "id": "q10",
+          "hit": true,
+          "answer": "中文。",
+          "error": null
+        },
+        {
+          "id": "q11",
+          "hit": false,
+          "answer": "不引入新依赖。",
+          "error": null
+        },
+        {
+          "id": "q12",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        }
+      ],
+      "task_completion": {
+        "categories": {
+          "files": false,
+          "commands": false,
+          "decisions": false,
+          "todos": false
+        },
+        "completed": 0,
+        "rate": 0.0
+      }
+    },
+    "C_full": {
+      "accuracy": 0.5833,
+      "rows": [
+        {
+          "id": "q1",
+          "hit": true,
+          "answer": "`middleware.py`",
+          "error": null
+        },
+        {
+          "id": "q2",
+          "hit": true,
+          "answer": "测试命令是：\n\n`pytest backend/app/tests/test_auth.py -q`",
+          "error": null
+        },
+        {
+          "id": "q3",
+          "hit": true,
+          "answer": "根据上下文，认证刷新问题只涉及 `middleware.py` 和 `test_auth.py`，下一步从 `middleware.py` 开始修改，因此 token 刷新逻辑在 `middleware.py` 中。",
+          "error": null
+        },
+        {
+          "id": "q4",
+          "hit": false,
+          "answer": "不知道。",
+          "error": null
+        },
+        {
+          "id": "q5",
+          "hit": true,
+          "answer": "待办事项：\n1. 补充过期 token 单测。\n2. 更新 README 环境变量。\n3. 修改 `middleware.py`，修复认证失败返回 500 应为 401 的问题。\n4. 运行 `pytest backend/app/tests/test_auth.py -q` 验证。",
+          "error": null
+        },
+        {
+          "id": "q6",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q7",
+          "hit": true,
+          "answer": "分支：`fix/auth-refresh`；PR：#128。",
+          "error": null
+        },
+        {
+          "id": "q8",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q9",
+          "hit": true,
+          "answer": "CI 失败的 job 是 `pytest-auth`，错误是 `AssertionError: assert 500 == 401`。",
+          "error": null
+        },
+        {
+          "id": "q10",
+          "hit": false,
+          "answer": "不知道",
+          "error": null
+        },
+        {
+          "id": "q11",
+          "hit": false,
+          "answer": "不知道。",
+          "error": null
+        },
+        {
+          "id": "q12",
+          "hit": true,
+          "answer": "负责人：Alice  \n截止时间：本周五",
+          "error": null
+        }
+      ],
+      "task_completion": {
+        "categories": {
+          "files": true,
+          "commands": true,
+          "decisions": false,
+          "todos": true
+        },
+        "completed": 3,
+        "rate": 0.75
+      }
+    }
+  },
+  "task_answers": {
+    "A_none": {
+      "mode": "A_none",
+      "question": "请完成最终任务：列出需要修改的文件、测试命令、已确定的决策和待办事项。",
+      "answer": "需要修改的文件：\n- backend/app/services/auth/middleware.py\n- backend/app/tests/test_auth.py\n- README（环境变量说明）\n\n测试命令：\n- pytest backend/app/tests/test_auth.py -q\n\n已确定的决策：\n- 当前分支 fix/auth-refresh，PR #128，负责人 Alice，截止本周五\n- token 刷新放在 middleware，不放 route\n- refresh token 存入 Redis，TTL 7 天\n- 新增表 refresh_tokens，迁移文件 backend/migrations/0009_refresh_tokens.sql\n- 不引入新依赖\n- 认证模块只改 middleware.py 和 test_auth.py，不调整路由层\n\n待办事项：\n1. 补充过期 token 单测\n2. 更新 README 环境变量",
+      "elapsed_ms": 35296.79,
+      "error": null
+    },
+    "B_truncate": {
+      "mode": "B_truncate",
+      "question": "请完成最终任务：列出需要修改的文件、测试命令、已确定的决策和待办事项。",
+      "answer": "需要修改的文件：\n-",
+      "elapsed_ms": 16696.62,
+      "error": null
+    },
+    "C_full": {
+      "mode": "C_full",
+      "question": "请完成最终任务：列出需要修改的文件、测试命令、已确定的决策和待办事项。",
+      "answer": "需要修改的文件：\n- `middleware.py`\n- `test_auth.py`\n- `README`（环境变量说明）\n\n测试命令：\n- `pytest backend/app/tests/test_auth.py -q`\n\n已确定的决策：\n- 认证模块只改 `middleware.py` 和 `test_auth.py`，不调整路由层。\n- 不引入新依赖。\n- 需要更新 README 中的环境变量说明。\n- 修复目标：认证失败应返回 401，而不是 500。\n\n待办事项：\n- 开始修改 `middleware.py`，然后运行测试。\n- 复现并修复 CI 错误：`AssertionError: assert 500 == 401`。\n- 补充过期 token 单测。\n- 更新 README 环境变量。",
+      "elapsed_ms": 22533.28,
+      "error": null
+    }
+  },
+  "llm_calls": [
+    {
+      "case_id": "compression",
+      "purpose": "compression_summary",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 16283.37,
+      "prompt_tokens": 1803,
+      "completion_tokens": 0,
+      "total_tokens": 1803,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "compression",
+      "purpose": "compression_summary",
+      "attempt": 2,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 15941.94,
+      "prompt_tokens": 1283,
+      "completion_tokens": 1400,
+      "total_tokens": 2683,
+      "usage_source": "provider",
+      "finish_reason": "length",
+      "raw_chars": 979,
+      "raw_preview": "1. 用户意图和明确要求  \n- 处理认证刷新问题，分支 `fix/auth-refresh`，关联 PR #128，负责人 Alice，截止本周五。  \n- 最近一次用户请求：总结当前任务，明确需要修改哪些文件、运行什么命令、有哪些决策和待办。\n\n2. 当前工作面  \n- 仓库分支：`fix/auth-refresh`，关联 PR #128。  \n- 正在处理：准备修改认证模块代码，下一步从 `middleware.py` 开始。  \n- 涉及文件：  \n  - `middleware.py`  \n  - `test_auth.py`  \n  - `README`（环境变量说明，待更新）  \n- 测试命令：`pytest backend/app/tests/test_auth.py -q`  \n- 本地运行命令：`uvicorn app.main:app --reload`  \n- UI 状态：无相关 UI 状态。\n\n3. 持久决策和约束  \n- 认证模块只改 `middleware.py` 和 `test_auth.py`，不调整路由层。  \n- 不引入新依赖。  \n- 需要更新 README 中的环境变量说明。  \n- 修复目标与 `assert 500 == 401` 相关，预期认证失败应返回 401 而不是 500。\n\n4. 重要事实、代码引用、错误和修复  \n- CI 失败 job：`pytest-auth`  \n- CI 错误：`AssertionError: assert 500 == 401`  \n- 已确认范围：认证刷新问题只涉及 `middleware.py` 和 `test_auth.py`。  \n- 旧的工具输出内容已被清理；如需恢复具体文件上下文，可重新运行 `workspace.read_file`、`rag.search_similar_documents` 或 `workspace.search_code` 获取。\n\n5. 待办任务和下一步  \n- 立即下一步：开始修改 `middleware.py`，然后运行 `pytest backend/app/tests/test_auth.py -q`。  \n- 复现并修复 CI 错误：`AssertionError: assert 500 == ",
+      "error": null
+    },
+    {
+      "case_id": "compression",
+      "purpose": "structured_memory",
+      "attempt": 1,
+      "json_mode": true,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 14018.72,
+      "prompt_tokens": 1745,
+      "completion_tokens": 0,
+      "total_tokens": 1745,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "compression",
+      "purpose": "structured_memory",
+      "attempt": 2,
+      "json_mode": true,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 13071.79,
+      "prompt_tokens": 1745,
+      "completion_tokens": 0,
+      "total_tokens": 1745,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "compression",
+      "purpose": "structured_memory",
+      "attempt": 3,
+      "json_mode": true,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 14211.76,
+      "prompt_tokens": 1280,
+      "completion_tokens": 1400,
+      "total_tokens": 2680,
+      "usage_source": "provider",
+      "finish_reason": "length",
+      "raw_chars": 35,
+      "raw_preview": "{\"summary\": \"处理认证刷新问题：当前分支 fix/auth",
+      "error": null
+    },
+    {
+      "case_id": "A_none:需要修改哪个 middleware 文件？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 1896.9,
+      "prompt_tokens": 4462,
+      "completion_tokens": 56,
+      "total_tokens": 4518,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 39,
+      "raw_preview": "backend/app/services/auth/middleware.py",
+      "error": null
+    },
+    {
+      "case_id": "A_none:MissingAuthorizationHead",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 1859.78,
+      "prompt_tokens": 4463,
+      "completion_tokens": 87,
+      "total_tokens": 4550,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 68,
+      "raw_preview": "MissingAuthorizationHeader 出现在 `backend/app/api/routes/repos.py:42`。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:token 刷新逻辑放在哪里？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 2042.48,
+      "prompt_tokens": 4462,
+      "completion_tokens": 90,
+      "total_tokens": 4552,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 77,
+      "raw_preview": "token 刷新逻辑放在 `backend/app/services/auth/middleware.py` 的 middleware，不放 route。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:测试命令是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 2446.25,
+      "prompt_tokens": 4459,
+      "completion_tokens": 102,
+      "total_tokens": 4561,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 47,
+      "raw_preview": "测试命令：`pytest backend/app/tests/test_auth.py -q`",
+      "error": null
+    },
+    {
+      "case_id": "A_none:refresh token 用什么存储、TTL ",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 2632.41,
+      "prompt_tokens": 4466,
+      "completion_tokens": 152,
+      "total_tokens": 4618,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 14,
+      "raw_preview": "Redis，TTL 7 天。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:有哪些待办事项？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 2863.98,
+      "prompt_tokens": 4460,
+      "completion_tokens": 184,
+      "total_tokens": 4644,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 36,
+      "raw_preview": "1. 补充过期 token 单测  \n2. 更新 README 环境变量",
+      "error": null
+    },
+    {
+      "case_id": "A_none:当前分支名和 PR 编号？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 3000.87,
+      "prompt_tokens": 4463,
+      "completion_tokens": 50,
+      "total_tokens": 4513,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 33,
+      "raw_preview": "当前分支：fix/auth-refresh；PR 编号：#128。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:新增的数据库表和迁移文件是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 3397.65,
+      "prompt_tokens": 4463,
+      "completion_tokens": 66,
+      "total_tokens": 4529,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 67,
+      "raw_preview": "新增表：refresh_tokens；迁移文件：backend/migrations/0009_refresh_tokens.sql。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:CI 失败的 job 和错误是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 3520.46,
+      "prompt_tokens": 4464,
+      "completion_tokens": 69,
+      "total_tokens": 4533,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 60,
+      "raw_preview": "CI 失败 job：pytest-auth  \n错误：AssertionError: assert 500 == 401",
+      "error": null
+    },
+    {
+      "case_id": "A_none:用户对回答语言有什么偏好？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 4109.29,
+      "prompt_tokens": 4462,
+      "completion_tokens": 59,
+      "total_tokens": 4521,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 11,
+      "raw_preview": "用户偏好中文简洁回答。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:代码约定是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 4454.38,
+      "prompt_tokens": 4459,
+      "completion_tokens": 66,
+      "total_tokens": 4525,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 8,
+      "raw_preview": "不要引入新依赖。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:测试命令是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 5025.66,
+      "prompt_tokens": 785,
+      "completion_tokens": 42,
+      "total_tokens": 827,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 40,
+      "raw_preview": "pytest backend/app/tests/test_auth.py -q",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:需要修改哪个 middleware 文件？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 5070.98,
+      "prompt_tokens": 788,
+      "completion_tokens": 47,
+      "total_tokens": 835,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 39,
+      "raw_preview": "backend/app/services/auth/middleware.py",
+      "error": null
+    },
+    {
+      "case_id": "A_none:截止时间和负责人是谁？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 5187.15,
+      "prompt_tokens": 4460,
+      "completion_tokens": 52,
+      "total_tokens": 4512,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 19,
+      "raw_preview": "负责人：Alice；截止时间：本周五。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:refresh token 用什么存储、TTL ",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 6560.07,
+      "prompt_tokens": 792,
+      "completion_tokens": 72,
+      "total_tokens": 864,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:当前分支名和 PR 编号？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 6722.34,
+      "prompt_tokens": 789,
+      "completion_tokens": 44,
+      "total_tokens": 833,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:MissingAuthorizationHead",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 6836.66,
+      "prompt_tokens": 789,
+      "completion_tokens": 67,
+      "total_tokens": 856,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:token 刷新逻辑放在哪里？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 7993.67,
+      "prompt_tokens": 788,
+      "completion_tokens": 218,
+      "total_tokens": 1006,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 39,
+      "raw_preview": "backend/app/services/auth/middleware.py",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:新增的数据库表和迁移文件是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 8505.69,
+      "prompt_tokens": 789,
+      "completion_tokens": 73,
+      "total_tokens": 862,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 4,
+      "raw_preview": "不知道。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:CI 失败的 job 和错误是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 9221.13,
+      "prompt_tokens": 790,
+      "completion_tokens": 158,
+      "total_tokens": 948,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 4,
+      "raw_preview": "不知道。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:截止时间和负责人是谁？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 9940.61,
+      "prompt_tokens": 786,
+      "completion_tokens": 41,
+      "total_tokens": 827,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:有哪些待办事项？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 10265.8,
+      "prompt_tokens": 786,
+      "completion_tokens": 451,
+      "total_tokens": 1237,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 113,
+      "raw_preview": "待办事项：更新 README 环境变量说明；修改 `backend/app/services/auth/middleware.py`；运行 `pytest backend/app/tests/test_auth.py -q`。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:请完成最终任务：列出需要修改的文件、测试命令、已",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 10556.08,
+      "prompt_tokens": 7183,
+      "completion_tokens": 0,
+      "total_tokens": 7183,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "C_full:测试命令是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 11885.12,
+      "prompt_tokens": 1196,
+      "completion_tokens": 58,
+      "total_tokens": 1254,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 50,
+      "raw_preview": "测试命令是：\n\n`pytest backend/app/tests/test_auth.py -q`",
+      "error": null
+    },
+    {
+      "case_id": "C_full:需要修改哪个 middleware 文件？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 12106.73,
+      "prompt_tokens": 1199,
+      "completion_tokens": 73,
+      "total_tokens": 1272,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 15,
+      "raw_preview": "`middleware.py`",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:用户对回答语言有什么偏好？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 12451.81,
+      "prompt_tokens": 788,
+      "completion_tokens": 350,
+      "total_tokens": 1138,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "中文。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:refresh token 用什么存储、TTL ",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 13616.93,
+      "prompt_tokens": 1203,
+      "completion_tokens": 65,
+      "total_tokens": 1268,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 4,
+      "raw_preview": "不知道。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:代码约定是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 14445.35,
+      "prompt_tokens": 1155,
+      "completion_tokens": 0,
+      "total_tokens": 1155,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "C_full:MissingAuthorizationHead",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 15117.71,
+      "prompt_tokens": 1200,
+      "completion_tokens": 105,
+      "total_tokens": 1305,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "C_full:当前分支名和 PR 编号？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 15163.86,
+      "prompt_tokens": 1200,
+      "completion_tokens": 39,
+      "total_tokens": 1239,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 30,
+      "raw_preview": "分支：`fix/auth-refresh`；PR：#128。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:token 刷新逻辑放在哪里？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 15194.44,
+      "prompt_tokens": 1199,
+      "completion_tokens": 310,
+      "total_tokens": 1509,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 108,
+      "raw_preview": "根据上下文，认证刷新问题只涉及 `middleware.py` 和 `test_auth.py`，下一步从 `middleware.py` 开始修改，因此 token 刷新逻辑在 `middleware.py` 中。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:新增的数据库表和迁移文件是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 15878.06,
+      "prompt_tokens": 1200,
+      "completion_tokens": 29,
+      "total_tokens": 1229,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:请完成最终任务：列出需要修改的文件、测试命令、已",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 16696.57,
+      "prompt_tokens": 802,
+      "completion_tokens": 700,
+      "total_tokens": 1502,
+      "usage_source": "provider",
+      "finish_reason": "length",
+      "raw_chars": 10,
+      "raw_preview": "需要修改的文件：\n-",
+      "error": null
+    },
+    {
+      "case_id": "C_full:CI 失败的 job 和错误是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 16839.56,
+      "prompt_tokens": 1201,
+      "completion_tokens": 80,
+      "total_tokens": 1281,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 67,
+      "raw_preview": "CI 失败的 job 是 `pytest-auth`，错误是 `AssertionError: assert 500 == 401`。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:用户对回答语言有什么偏好？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 16963.26,
+      "prompt_tokens": 1199,
+      "completion_tokens": 94,
+      "total_tokens": 1293,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 3,
+      "raw_preview": "不知道",
+      "error": null
+    },
+    {
+      "case_id": "C_full:截止时间和负责人是谁？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 17619.02,
+      "prompt_tokens": 1197,
+      "completion_tokens": 63,
+      "total_tokens": 1260,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 20,
+      "raw_preview": "负责人：Alice  \n截止时间：本周五",
+      "error": null
+    },
+    {
+      "case_id": "C_full:有哪些待办事项？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 18520.61,
+      "prompt_tokens": 1197,
+      "completion_tokens": 482,
+      "total_tokens": 1679,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 142,
+      "raw_preview": "待办事项：\n1. 补充过期 token 单测。\n2. 更新 README 环境变量。\n3. 修改 `middleware.py`，修复认证失败返回 500 应为 401 的问题。\n4. 运行 `pytest backend/app/tests/test_auth.py -q` 验证。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:代码约定是什么？",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 19256.87,
+      "prompt_tokens": 1196,
+      "completion_tokens": 260,
+      "total_tokens": 1456,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 4,
+      "raw_preview": "不知道。",
+      "error": null
+    },
+    {
+      "case_id": "C_full:请完成最终任务：列出需要修改的文件、测试命令、已",
+      "purpose": "answer",
+      "attempt": 1,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 22533.24,
+      "prompt_tokens": 1213,
+      "completion_tokens": 618,
+      "total_tokens": 1831,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 359,
+      "raw_preview": "需要修改的文件：\n- `middleware.py`\n- `test_auth.py`\n- `README`（环境变量说明）\n\n测试命令：\n- `pytest backend/app/tests/test_auth.py -q`\n\n已确定的决策：\n- 认证模块只改 `middleware.py` 和 `test_auth.py`，不调整路由层。\n- 不引入新依赖。\n- 需要更新 README 中的环境变量说明。\n- 修复目标：认证失败应返回 401，而不是 500。\n\n待办事项：\n- 开始修改 `middleware.py`，然后运行测试。\n- 复现并修复 CI 错误：`AssertionError: assert 500 == 401`。\n- 补充过期 token 单测。\n- 更新 README 环境变量。",
+      "error": null
+    },
+    {
+      "case_id": "B_truncate:代码约定是什么？",
+      "purpose": "answer",
+      "attempt": 2,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 7198.02,
+      "prompt_tokens": 1155,
+      "completion_tokens": 0,
+      "total_tokens": 1155,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "A_none:请完成最终任务：列出需要修改的文件、测试命令、已",
+      "purpose": "answer",
+      "attempt": 2,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 13551.73,
+      "prompt_tokens": 7183,
+      "completion_tokens": 0,
+      "total_tokens": 7183,
+      "usage_source": "estimate",
+      "error": "RuntimeError: empty completion content"
+    },
+    {
+      "case_id": "B_truncate:代码约定是什么？",
+      "purpose": "answer",
+      "attempt": 3,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 3653.18,
+      "prompt_tokens": 785,
+      "completion_tokens": 245,
+      "total_tokens": 1030,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 7,
+      "raw_preview": "不引入新依赖。",
+      "error": null
+    },
+    {
+      "case_id": "A_none:请完成最终任务：列出需要修改的文件、测试命令、已",
+      "purpose": "answer",
+      "attempt": 3,
+      "json_mode": false,
+      "model": "deepseek-v4-pro",
+      "latency_ms": 6619.24,
+      "prompt_tokens": 4476,
+      "completion_tokens": 612,
+      "total_tokens": 5088,
+      "usage_source": "provider",
+      "finish_reason": "stop",
+      "raw_chars": 438,
+      "raw_preview": "需要修改的文件：\n- backend/app/services/auth/middleware.py\n- backend/app/tests/test_auth.py\n- README（环境变量说明）\n\n测试命令：\n- pytest backend/app/tests/test_auth.py -q\n\n已确定的决策：\n- 当前分支 fix/auth-refresh，PR #128，负责人 Alice，截止本周五\n- token 刷新放在 middleware，不放 route\n- refresh token 存入 Redis，TTL 7 天\n- 新增表 refresh_tokens，迁移文件 backend/migrations/0009_refresh_tokens.sql\n- 不引入新依赖\n- 认证模块只改 middleware.py 和 test_auth.py，不调整路由层\n\n待办事项：\n1. 补充过期 token 单测\n2. 更新 README 环境变量",
+      "error": null
+    }
+  ]
+}
